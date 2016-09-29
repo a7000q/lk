@@ -16,23 +16,8 @@ use yii\helpers\Html;
 /**
  * TableController implements the CRUD actions for Tables model.
  */
-class TableController extends Controller
+class TableController extends CController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([

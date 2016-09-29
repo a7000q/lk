@@ -7,8 +7,9 @@ use kartik\grid\EditableColumnAction;
 use yii\helpers\ArrayHelper;
 use backend\models\fields\Fields;
 use yii;
+use yii\web\NotFoundHttpException;
 
-class FieldController extends \yii\web\Controller
+class FieldController extends CController
 {
     public function actions()
     {

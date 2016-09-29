@@ -3,6 +3,7 @@
 namespace common\models\tables;
 
 use Yii;
+use common\models\fields\AqFields;
 
 /**
  * This is the model class for table "aq_tables".
@@ -52,7 +53,7 @@ class AqTables extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAqFields()
+    public function getFields()
     {
         return $this->hasMany(AqFields::className(), ['id_table' => 'id']);
     }
