@@ -1,8 +1,13 @@
 <?
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use kartik\form\ActiveForm;
-    use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use kartik\form\ActiveForm;
+use yii\widgets\Pjax;
+
+use common\assets\EditablePageAsset;
+
+if ($model->fieldsDataProvider->count == 0)
+    EditablePageAsset::register($this);
 ?>
 
 <?php

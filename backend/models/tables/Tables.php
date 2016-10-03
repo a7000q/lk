@@ -16,4 +16,11 @@ class Tables extends \common\models\tables\AqTables
             ]
         );
     }
+
+    static public function newTable($id_category)
+    {
+        $model = new Tables();
+        $model->id_category = $id_category;
+        $model->save();
+    }
 }

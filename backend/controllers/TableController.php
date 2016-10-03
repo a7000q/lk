@@ -3,28 +3,49 @@
 namespace backend\controllers;
 
 use backend\models\bd\BD;
+use backend\models\category\Category;
 use backend\models\fields\Fields;
 use Yii;
 use backend\models\tables\Tables;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\helpers\Html;
+use kartik\grid\EditableColumnAction;
+use yii\helpers\ArrayHelper;
 
-/**
- * TableController implements the CRUD actions for Tables model.
- */
 class TableController extends CController
 {
+    public function actions()
+    {
+        return ArrayHelper::merge(parent::actions(), [
+            'editrecord' => [
+                'class' => EditableColumnAction::className(),
+                'modelClass' => Tables::className(),
+                'outputValue' => function ($model, $attribute, $key, $index) {
+                    return $model->$attribute;
+                },
+                'outputMessage' => function($model, $attribute, $key, $index) {
+                    return '';
+                },
+                'showModelErrors' => true,
+                'errorOptions' => ['header' => ''],
+                // 'postOnly' => true,
+                'ajaxOnly' => true,
+                // 'findModel' => function($id, $action) {},
+                // 'checkAccess' => function($action, $model) {}
+            ]
+        ]);
+    }
+
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Tables::find(),
         ]);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -81,7 +102,15 @@ class TableController extends CController
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if (Yii::$app->request->isAjax)
+        {
+            $category = Category::findOne($model->id_category);
+            $model->delete();
+
+            return $this->renderAjax('index', ['model' => $category]);
+        }
 
         return $this->redirect(['index']);
     }

@@ -1,35 +1,79 @@
 <?php
-
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use kartik\form\ActiveForm;
+use yii\widgets\Pjax;
+use common\assets\EditablePageAsset;
 
-/* @var $this yii\web\View */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+if ($model->tablesDataProvider->count == 0)
+    EditablePageAsset::register($this);
 
-$this->title = 'Таблицы';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tables-index">
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'panel' => [
-            'heading'=>'<h3 class="panel-title"><i class="icon-briefcase"></i> Таблицы</h3>',
-            'type'=>'info',
-            'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Добавить', ['create'], ['class' => 'btn btn-success']),
-            'after'=>false,
-            'footer'=>false
-        ],
-        'columns' => [
-            'name',
-            'rus_name',
-            'sort',
-            [
-                'class' => '\kartik\grid\ActionColumn',
-                'template' => '{view}{delete}'
+<?php
+$this->registerJs(
+    '$("document").ready(function(){
+            $("#pjax-add-table").on("pjax:end", function() {
+            $.pjax.reload({container:"#pjax-grid-table"});  //Reload GridView
+        });
+    });'
+);
+?>
+
+<?Pjax::begin(['id' => 'pjax-add-table'])?>
+    <? $form = ActiveForm::begin(['options' => ['data-pjax' => true]]);?>
+        <?=Html::submitButton('<i class="glyphicon glyphicon-plus"></i> Добавить', ['class' => 'btn btn-success', 'name' => 'create-table'])?>
+    <? ActiveForm::end();?>
+<?Pjax::end()?>
+
+<?= GridView::widget([
+    'dataProvider' => $model->tablesDataProvider,
+    'id' => 'grid-tables',
+    'columns' => [
+        [
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'name',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord']],
+                'inputType' => \kartik\editable\Editable::INPUT_SELECT2,
+                'options' => ['data' => \backend\models\bd\BD::getArrayTables()],
             ],
+            'refreshGrid' => true
         ],
-        'panelBeforeTemplate' => '{before}'
+        [
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'rus_name',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord']],
+            ],
+            'refreshGrid' => true
+        ],
+        [
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'sort',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord']],
+            ]
+        ],
+        [
+            'class' => '\kartik\grid\ActionColumn',
+            'template' => '{view}{delete}',
+            'controller' => 'table',
+            'visibleButtons' => [
+                'view' => function($model, $key, $index){
+                    if ($model->name == "" || $model->rus_name == "") return false;
 
-    ]); ?>
-</div>
+                    return true;
+                }
+            ]
+        ],
+    ],
+    'pjax'=>true,
+    'pjaxSettings'=>[
+        'neverTimeout'=>true,
+        'options' => [
+            'id' => 'pjax-grid-table'
+        ]
+    ],
+    'panelBeforeTemplate' => '{before}'
+]); ?>

@@ -4,6 +4,7 @@ namespace common\models\tables;
 
 use Yii;
 use common\models\fields\AqFields;
+use common\models\category\AqCategory;
 
 /**
  * This is the model class for table "aq_tables".
@@ -50,11 +51,13 @@ class AqTables extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFields()
     {
         return $this->hasMany(AqFields::className(), ['id_table' => 'id']);
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(AqCategory::className(), ['id' => 'id_category']);
     }
 }

@@ -11,7 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'defaultRoute' => 'table',
+    'defaultRoute' => 'category',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',

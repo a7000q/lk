@@ -75,8 +75,8 @@ LayoutAsset::register($this);
                 echo Menu::widget([
                     'items' => [
                         [
-                            'label' => '<i class="icon-briefcase"></i><span class="title">Таблицы</span><span class="arrow"></span>',
-                            'url' => ['table/index']
+                            'label' => '<i class="icon-briefcase"></i><span class="title">Категории</span><span class="arrow"></span>',
+                            'url' => ['category/index']
                         ],
                     ],
                     'options' => [
@@ -118,9 +118,7 @@ LayoutAsset::register($this);
 <script src="<?=Yii::getAlias('@commonWeb')?>/assets/global/plugins/excanvas.min.js"></script>
 <![endif]-->
 <?php $this->endBody() ?>
-<script>
-    jQuery.noConflict( true );
-</script>
+
 </body>
 </html>
 <?php $this->endPage() ?>

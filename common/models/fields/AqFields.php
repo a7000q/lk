@@ -5,17 +5,7 @@ namespace common\models\fields;
 use Yii;
 use common\models\tables\AqTables;
 
-/**
- * This is the model class for table "aq_fields".
- *
- * @property integer $id
- * @property integer $id_table
- * @property string $name
- * @property string $rus_name
- * @property integer $sort
- *
- * @property AqTables $idTable
- */
+
 class AqFields extends \yii\db\ActiveRecord
 {
     /**
@@ -32,6 +22,7 @@ class AqFields extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['sort', 'default', 'value' => 500],
             [['id_table', 'sort'], 'integer'],
             [['name', 'rus_name'], 'string', 'max' => 255],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => AqTables::className(), 'targetAttribute' => ['id_table' => 'id']],
