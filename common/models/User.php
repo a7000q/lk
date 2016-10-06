@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use common\models\auth\AuthAssignment;
 
 /**
  * User model
@@ -42,6 +43,13 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Логин'
         ];
     }
 
@@ -185,5 +193,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function isRole($role)
+    {
+        if (!AuthAssignment::findOne(['item_name' => $role, 'user_id' => $this->id])) return false;
+
+        return true;
     }
 }

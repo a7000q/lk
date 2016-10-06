@@ -24,7 +24,10 @@
         "kartik-v/yii2-widget-activeform": "@dev",
         "kartik-v/yii2-widget-select2": "^2.0",
         "kartik-v/yii2-tabs-x": "*",
-        "kartik-v/yii2-editable": "^1.7"
+        "kartik-v/yii2-editable": "^1.7",
+        "kartik-v/yii2-widget-sidenav": "*",
+        "serhatozles/yii2-arraysearch": "dev-master",
+        "kartik-v/yii2-widget-switchinput": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -78,6 +78,14 @@ LayoutAsset::register($this);
                             'label' => '<i class="icon-briefcase"></i><span class="title">Категории</span><span class="arrow"></span>',
                             'url' => ['category/index']
                         ],
+                        [
+                            'label' => '<i class="icon-user"></i><span class="title">Пользователи</span><span class="arrow"></span>',
+                            'url' => ['user/index']
+                        ],
+                        [
+                            'label' => '<i class="icon-users"></i><span class="title">Роли</span><span class="arrow"></span>',
+                            'url' => ['role/index']
+                        ],
                     ],
                     'options' => [
                         'class' => 'page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu',
