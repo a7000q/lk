@@ -35,23 +35,23 @@ class Tables extends \common\models\tables\AqTables
 
     public function beforeDelete()
     {
-        $this->deleteAllPermission();
+        $this->deleteAllStandartPermission();
         return parent::beforeDelete();
     }
 
     private function addStandartPermissions()
     {
-        $this->addGeneralPermission();
+        $this->addPermission('general');
         $this->addPermission('view');
         $this->addPermission('create');
         $this->addPermission('update');
         $this->addPermission('delete');
     }
 
-    private function addGeneralPermission()
+    private function addPermission($name)
     {
         $auth = Yii::$app->authManager;
-        $permission_name = $this->getPermissionName('general');
+        $permission_name = $this->getPermissionName($name);
 
         $permission = $auth->getPermission($permission_name);
 
@@ -62,49 +62,23 @@ class Tables extends \common\models\tables\AqTables
         }
     }
 
-
-    private function addPermission($name)
-    {
-        $auth = Yii::$app->authManager;
-        $permission_name = $this->getPermissionName($name);
-
-        $general_permission = $auth->getPermission($this->getPermissionName('general'));
-        $permission = $auth->getPermission($permission_name);
-
-        if ($permission == null && $general_permission)
-        {
-            $permission = $auth->createPermission($permission_name);
-            $auth->add($permission);
-
-            $auth->addChild($general_permission, $permission);
-        }
-    }
-
     private function removePermission($name)
     {
         $auth = Yii::$app->authManager;
         $permission_name = $this->getPermissionName($name);
 
         $permission = $auth->getPermission($permission_name);
-        $childrens = $auth->getChildren($permission_name);
-
 
         if ($permission != null)
-        {
-            foreach ($childrens as $children)
-                $auth->remove($children);
-
             $auth->remove($permission);
-        }
     }
 
-    private function deleteAllPermission()
+    private function deleteAllStandartPermission()
     {
         $this->removePermission('general');
-    }
-
-    public function getPermissionName($name)
-    {
-        return $name.'-table-'.$this->id;
+        $this->removePermission('view');
+        $this->removePermission('create');
+        $this->removePermission('update');
+        $this->removePermission('delete');
     }
 }

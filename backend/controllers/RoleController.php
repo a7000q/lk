@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 
+use backend\models\fields\PermissionFields;
 use backend\models\roles\AddRoleForm;
 use backend\models\roles\UpdateRoleForm;
 use backend\models\tables\PermissionTables;
@@ -88,10 +89,18 @@ class RoleController extends CController
             return;
         }
 
-        if (Yii::$app->request->isAjax && isset($post['PermissionTables']))
+        if (Yii::$app->request->isAjax)
         {
-            $table = $this->findPermissionTable($post['PermissionTables']['id'], $id);
-            $table->load($post);
+            if (isset($post['PermissionTables'])) {
+                $table = $this->findPermissionTable($post['PermissionTables']['id'], $id);
+                $table->load($post);
+            }
+
+            if (isset($post['PermissionFields'])) {
+                $field = $this->findPermissionField($post['PermissionFields']['id'], $id);
+                $field->load($post);
+            }
+
             return $this->renderAjax('view', ['model' => $model]);
         }
 
@@ -125,6 +134,14 @@ class RoleController extends CController
         $table->role_name = $role_name;
 
         return $table;
+    }
+
+    private function findPermissionField($id, $role_name)
+    {
+        $field = PermissionFields::findOne($id);
+        $field->role_name = $role_name;
+
+        return $field;
     }
 
 }

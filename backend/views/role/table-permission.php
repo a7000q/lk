@@ -75,7 +75,45 @@ use kartik\switchinput\SwitchInput;
     <div class="panel-heading">Действия с полями</div>
     <div class="panel-body">
         <?Pjax::begin()?>
-
+            <table class="table table-bordered">
+                <tr>
+                    <td><b>Название поля</b></td>
+                    <td><b>Доступность</b></td>
+                    <td><b>Редактирование</b></td>
+                </tr>
+                <?foreach ($table->permissionFields as $field):?>
+                    <?$field->role_name = $table->role_name;?>
+                    <tr>
+                        <td><?=$field->rus_name?></td>
+                        <td>
+                            <?$form = ActiveForm::begin(['id' => 'general-field-permissions-'.$field->id, 'options' => ['data-pjax' => true]]);?>
+                                <?=$form->field($field, 'id', ['template' => '{input}'])->hiddenInput()?>
+                                <?= $form->field($field, 'general', ['template' => '{input}'])->widget(SwitchInput::classname(), [
+                                    'type' => SwitchInput::CHECKBOX,
+                                    'pluginEvents' => [
+                                        "switchChange.bootstrapSwitch" => "function() { $('#general-field-permissions-".$field->id."').submit(); }"
+                                    ],
+                                    'options' => ['id' => 'general-input-field-'.$field->id]
+                                ]);?>
+                            <?ActiveForm::end(); ?>
+                        </td>
+                        <td>
+                            <?if ($field->general):?>
+                                <?$form = ActiveForm::begin(['id' => 'update-field-permissions-'.$field->id, 'options' => ['data-pjax' => true]]);?>
+                                <?=$form->field($field, 'id', ['template' => '{input}'])->hiddenInput()?>
+                                <?= $form->field($field, 'update', ['template' => '{input}'])->widget(SwitchInput::classname(), [
+                                    'type' => SwitchInput::CHECKBOX,
+                                    'pluginEvents' => [
+                                        "switchChange.bootstrapSwitch" => "function() { $('#update-field-permissions-".$field->id."').submit(); }"
+                                    ],
+                                    'options' => ['id' => 'update-input-field-'.$field->id]
+                                ]);?>
+                                <?ActiveForm::end(); ?>
+                            <?endif;?>
+                        </td>
+                    </tr>
+                <?endforeach;?>
+            </table>
         <?Pjax::end()?>
     </div>
 </div>

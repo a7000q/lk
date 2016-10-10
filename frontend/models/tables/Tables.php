@@ -1,0 +1,91 @@
+<?php
+
+
+namespace frontend\models\tables;
+
+use frontend\models\fields\Fields;
+use yii\helpers\ArrayHelper;
+use Yii;
+
+class Tables extends \common\models\tables\AqTables
+{
+    public function getGridViewFieldsArray()
+    {
+        $fields = $this->fields;
+
+        $result = ArrayHelper::getColumn($fields, function($element){
+            if ($element->isGeneral())
+                return $element->name;
+        });
+
+        $result = array_filter($result);
+
+        if (count($result) == 0)
+            return false;
+
+        if ($this->isUpdate() or $this->isView() or $this->isDelete())
+            $result[] = [
+                'class' => 'kartik\grid\ActionColumn',
+                'visibleButtons' => [
+                    'update' => $this->isUpdate(),
+                    'view' => $this->isView(),
+                    'delete' => $this->isDelete()
+                ],
+                'urlCreator' => function($action, $model, $key, $index){
+                       return [$action, 'id' => $model->id, 'id_table' => $this->id];
+                }
+            ];
+
+        return $result;
+    }
+
+    public function getFields()
+    {
+        return $this->hasMany(Fields::className(), ['id_table' => 'id']);
+    }
+
+    private function isUpdate()
+    {
+        if (!Yii::$app->user->can($this->getPermissionName('update')))
+            return false;
+
+        return true;
+    }
+
+    private function isView()
+    {
+        if (!Yii::$app->user->can($this->getPermissionName('view')))
+            return false;
+
+        return true;
+    }
+
+    private function isDelete()
+    {
+        if (!Yii::$app->user->can($this->getPermissionName('delete')))
+            return false;
+
+        return true;
+    }
+
+    public function isCreate()
+    {
+        if (!Yii::$app->user->can($this->getPermissionName('create')))
+            return false;
+
+        return true;
+    }
+
+    public function isGeneral()
+    {
+        if (!Yii::$app->user->can($this->getPermissionName('general')))
+            return false;
+
+        if (!$this->getGridViewFieldsArray())
+            return false;
+
+        return true;
+    }
+
+
+}

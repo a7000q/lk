@@ -50,4 +50,9 @@ class AqFields extends \yii\db\ActiveRecord
     {
         return $this->hasOne(AqTables::className(), ['id' => 'id_table']);
     }
+
+    public function getPermissionName($name)
+    {
+        return $name.'-field-'.$this->id;
+    }
 }

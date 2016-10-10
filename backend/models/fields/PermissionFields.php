@@ -1,20 +1,19 @@
 <?php
 
-namespace backend\models\tables;
+namespace backend\models\fields;
 
-use yii;
+use Yii;
 use serhatozles\arraysearch\ArraySearch;
 use yii\helpers\ArrayHelper;
-use backend\models\fields\PermissionFields;
 
-class PermissionTables extends Tables
+class PermissionFields extends Fields
 {
     public $role_name;
 
     public function rules()
     {
         return ArrayHelper::merge([
-            [['general', 'view', 'create', 'update', 'delete'], 'string'],
+            [['general', 'update'], 'string'],
             ['role_name', 'string']
         ], parent::rules());
     }
@@ -23,10 +22,7 @@ class PermissionTables extends Tables
     {
         return ArrayHelper::merge([
             'general' => 'Доступность',
-            'view' => 'Просмотр',
-            'create' => 'Создание',
-            'update' => 'Редактирование',
-            'delete' => 'Удаление',
+            'update' => 'Редактирование'
         ], parent::attributeLabels());
     }
 
@@ -83,45 +79,6 @@ class PermissionTables extends Tables
             $this->reInstallPermission('general');
     }
 
-    public function getView()
-    {
-        return $this->isPermissionByRole('view');
-    }
-
-    public function setView($value)
-    {
-        if ($value)
-            $this->installPermission('view');
-        else
-            $this->reInstallPermission('view');
-    }
-
-    public function getCreate()
-    {
-        return $this->isPermissionByRole('create');
-    }
-
-    public function setCreate($value)
-    {
-        if ($value)
-            $this->installPermission('create');
-        else
-            $this->reInstallPermission('create');
-    }
-
-    public function getDelete()
-    {
-        return $this->isPermissionByRole('delete');
-    }
-
-    public function setDelete($value)
-    {
-        if ($value)
-            $this->installPermission('delete');
-        else
-            $this->reInstallPermission('delete');
-    }
-
     public function getUpdate()
     {
         return $this->isPermissionByRole('update');
@@ -133,10 +90,5 @@ class PermissionTables extends Tables
             $this->installPermission('update');
         else
             $this->reInstallPermission('update');
-    }
-
-    public function getPermissionFields()
-    {
-        return $this->hasMany(PermissionFields::className(), ['id_table' => 'id']);
     }
 }

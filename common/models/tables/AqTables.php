@@ -60,4 +60,9 @@ class AqTables extends \yii\db\ActiveRecord
     {
         return $this->hasOne(AqCategory::className(), ['id' => 'id_category']);
     }
+
+    public function getPermissionName($name)
+    {
+        return $name.'-table-'.$this->id;
+    }
 }
