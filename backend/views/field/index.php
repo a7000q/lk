@@ -3,6 +3,7 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use yii\widgets\Pjax;
+use common\models\fields\AqFieldType;
 
 use common\assets\EditablePageAsset;
 
@@ -37,14 +38,29 @@ $this->registerJs(
                 'formOptions' => ['action' => ['/field/editrecord']],
                 'inputType' => \kartik\editable\Editable::INPUT_SELECT2,
                 'options' => ['data' => \backend\models\bd\BD::getArrayFields($model->name)]
-            ]
+            ],
+            'refreshGrid' => true
         ],
         [
             'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'rus_name',
             'editableOptions'=> [
                 'formOptions' => ['action' => ['/field/editrecord']]
-            ]
+            ],
+            'refreshGrid' => true
+        ],
+        [
+            'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'id_type',
+            'value' => function($data){
+                    return \yii\helpers\ArrayHelper::getValue($data, 'type.name');
+            },
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/field/editrecord']],
+                'inputType' => 'dropDownList',
+                'data' => AqFieldType::getAllArray()
+            ],
+            'refreshGrid' => true
         ],
         [
             'class' => 'kartik\grid\EditableColumn',
@@ -55,8 +71,16 @@ $this->registerJs(
         ],
         [
             'class' => '\kartik\grid\ActionColumn',
-            'template' => '{delete}',
-            'controller' => 'field'
+            'template' => '{view}{delete}',
+            'controller' => 'field',
+            'visibleButtons' => [
+                'view' => function($field, $key, $index){
+                    if ($field->name == '' || $field->rus_name == '' || $field->id_type == null)
+                        return false;
+
+                    return true;
+                }
+            ]
         ]
     ],
     'pjax'=>true,

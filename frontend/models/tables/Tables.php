@@ -15,7 +15,7 @@ class Tables extends \common\models\tables\AqTables
 
         $result = ArrayHelper::getColumn($fields, function($element){
             if ($element->isGeneral())
-                return $element->name;
+                return $element->gridViewColumn;
         });
 
         $result = array_filter($result);
@@ -23,11 +23,11 @@ class Tables extends \common\models\tables\AqTables
         if (count($result) == 0)
             return false;
 
-        if ($this->isUpdate() or $this->isView() or $this->isDelete())
+        if ($this->isView() or $this->isDelete())
             $result[] = [
                 'class' => 'kartik\grid\ActionColumn',
+                'template' => '{view}{delete}',
                 'visibleButtons' => [
-                    'update' => $this->isUpdate(),
                     'view' => $this->isView(),
                     'delete' => $this->isDelete()
                 ],
@@ -39,12 +39,29 @@ class Tables extends \common\models\tables\AqTables
         return $result;
     }
 
+    public function getDetailViewAttributesArray($model)
+    {
+        $fields = $this->fields;
+
+        $result = ArrayHelper::getColumn($fields, function($element) use ($model){
+            if ($element->isGeneral())
+                return $element->getDetailViewAttributes($model);
+        });
+
+        $result = array_filter($result);
+
+        if (count($result) == 0)
+            return false;
+
+        return $result;
+    }
+
     public function getFields()
     {
         return $this->hasMany(Fields::className(), ['id_table' => 'id']);
     }
 
-    private function isUpdate()
+    public function isUpdate()
     {
         if (!Yii::$app->user->can($this->getPermissionName('update')))
             return false;
@@ -52,7 +69,7 @@ class Tables extends \common\models\tables\AqTables
         return true;
     }
 
-    private function isView()
+    public function isView()
     {
         if (!Yii::$app->user->can($this->getPermissionName('view')))
             return false;
@@ -60,7 +77,7 @@ class Tables extends \common\models\tables\AqTables
         return true;
     }
 
-    private function isDelete()
+    public function isDelete()
     {
         if (!Yii::$app->user->can($this->getPermissionName('delete')))
             return false;

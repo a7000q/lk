@@ -12,6 +12,7 @@ class UpdateUser extends Model
     public $id;
 
     public $_user;
+    public $limitation;
 
     public function rules()
     {

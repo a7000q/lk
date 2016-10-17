@@ -2,6 +2,7 @@
 
 namespace common\models\fields;
 
+use common\models\limitations\AqLimitations;
 use Yii;
 use common\models\tables\AqTables;
 
@@ -23,7 +24,7 @@ class AqFields extends \yii\db\ActiveRecord
     {
         return [
             ['sort', 'default', 'value' => 500],
-            [['id_table', 'sort'], 'integer'],
+            [['id_table', 'sort', 'id_type'], 'integer'],
             [['name', 'rus_name'], 'string', 'max' => 255],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => AqTables::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -40,6 +41,7 @@ class AqFields extends \yii\db\ActiveRecord
             'name' => 'Физическое название',
             'rus_name' => 'Название',
             'sort' => 'Сортировка',
+            'id_type' => 'Тип'
         ];
     }
 
@@ -54,5 +56,25 @@ class AqFields extends \yii\db\ActiveRecord
     public function getPermissionName($name)
     {
         return $name.'-field-'.$this->id;
+    }
+
+    public function getType()
+    {
+        return $this->hasOne(AqFieldType::className(), ['id' => 'id_type']);
+    }
+
+    public function  getTypeDate()
+    {
+        return $this->hasOne(AqFieldDate::className(), ['id_field' => 'id']);
+    }
+
+    public function getTypeLink()
+    {
+        return $this->hasOne(AqFieldLink::className(), ['id_field' => 'id']);
+    }
+
+    public function getAqLimitations()
+    {
+        return $this->hasMany(AqLimitations::className(), ['id_field' => 'id']);
     }
 }

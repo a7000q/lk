@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\users\AddLimitation;
 use backend\models\users\UpdateUser;
 use Yii;
 use backend\models\users\Users;
@@ -14,6 +15,7 @@ use backend\models\users\AddUser;
 use yii\helpers\Json;
 use kartik\helpers\Html;
 use backend\models\roles\Role;
+use backend\models\users\Limitations;
 
 /**
  * UserController implements the CRUD actions for Users model.
@@ -62,6 +64,8 @@ class UserController extends CController
         $model = new UpdateUser();
         $model->attributes = $user->attributes;
         $model->_user = $user;
+        $model->limitation = new AddLimitation();
+        $model->limitation->id_user = $user->id;
 
         $post = Yii::$app->request->post();
 
@@ -85,12 +89,22 @@ class UserController extends CController
             return;
         }
 
-
         if ($model->load($post) && $model->update())
             Yii::$app->session->setFlash('kv-detail-success', 'Запись сохранена!');
 
         if (Yii::$app->request->isAjax && isset($post['role']))
             Role::addRoleByUser($post['role'], $id);
+
+        if (isset($post['AddLimitation']))
+        {
+            $model->limitation->load($post);
+
+            if (isset($post['addLimitations']))
+            {
+                $model->limitation->save();
+                $model->limitation = new AddLimitation();
+            }
+        }
 
         return $this->render('view', [
             'model' => $model,

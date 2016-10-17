@@ -38,6 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Роли',
                 'content' => $this->render('roles', ['model' => $model])
+            ],
+            [
+                'label' => 'Ограничения',
+                'content' => $this->render('limitations', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

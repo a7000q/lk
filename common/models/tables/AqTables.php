@@ -35,6 +35,7 @@ class AqTables extends \yii\db\ActiveRecord
             ['sort', 'default', 'value' => 500],
             [['sort'], 'integer'],
             [['name', 'rus_name'], 'string', 'max' => 255],
+            ['rus_name', 'unique']
         ];
     }
 
@@ -64,5 +65,13 @@ class AqTables extends \yii\db\ActiveRecord
     public function getPermissionName($name)
     {
         return $name.'-table-'.$this->id;
+    }
+
+    public function getClassName()
+    {
+        $ns = 'frontend\models\table\generate';
+        $class = "Table".$this->name.$this->id;
+
+        return $ns."\\".$class;
     }
 }

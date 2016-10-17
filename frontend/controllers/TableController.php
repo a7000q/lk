@@ -3,20 +3,36 @@ namespace frontend\controllers;
 
 use Yii;
 use frontend\models\tables\Tables;
-use frontend\models\table\TableActiveRecords;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
+use yii\helpers\Json;
+use kartik\helpers\Html;
 
 
 class TableController extends CController
 {
-   public function actionIndex($id)
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+    public function actionIndex($id)
    {
        $model = $this->findTable($id);
 
+       $query = $model::find()->filterLimitations(Yii::$app->user->id, $model::$tableBD->id);
+
        $dataProvider = new ActiveDataProvider([
-           'query' => $model::find(),
+           'query' => $query
        ]);
 
        return $this->render('index', [
@@ -24,9 +40,85 @@ class TableController extends CController
        ]);
    }
 
+   public function actionCreate($id)
+   {
+       $table = $this->findTable($id);
+
+       if (!$table::$tableBD->isCreate())
+           throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+
+       $model = new $table;
+       $post = Yii::$app->request->post();
+
+       if ($model->load($post) && $model->save())
+           $this->redirect(['index', 'id' => $id]);
+
+       return $this->render('create', ['model' => $model, 'table' => $table::$tableBD]);
+   }
+
+   public function actionDelete($id, $id_table)
+   {
+       $model = $this->findTable($id_table);
+
+       if (!$model::$tableBD->isDelete())
+           throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+
+       $record = $model::find($id)->one();
+
+       if (!$record)
+           throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+
+       $record->delete();
+       $this->redirect(['index', 'id' => $id_table]);
+   }
+
+   public function actionView($id, $id_table)
+   {
+       $table = $this->findTable($id_table);
+
+       if (!$table::$tableBD->isView())
+           throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+
+       $model = $table::find($id)->one();
+
+       if (!$model)
+           throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+
+       $post = Yii::$app->request->post();
+
+       if (Yii::$app->request->isAjax && isset($post['kvdelete'])) {
+           echo Json::encode([
+               'success' => true,
+               'messages' => [
+                   'kv-detail-info' => 'Запись удалена. ' .
+                       Html::a('<i class="glyphicon glyphicon-hand-right"></i>  Перейти',
+                           ['/table/index', 'id' => $table::$tableBD->id], ['class' => 'btn btn-sm btn-info']) . ' в таблицу "'.$table::$tableBD->rus_name.'"'
+               ]
+           ]);
+           $model->delete();
+           return;
+       }
+
+
+       if ($model->load($post) && $model->save())
+           Yii::$app->session->setFlash('kv-detail-success', 'Запись сохранена!');
+
+       return $this->render('view', ['model' => $model, 'table' => $table::$tableBD]);
+   }
+
     protected function findTable($id)
     {
-        if ($model = TableActiveRecords::getTable($id)) {
+        $table = Tables::findOne($id);
+
+        if (!$table)
+            throw new NotFoundHttpException('Ошибка в получении ресурса.');
+
+        $class = $table->getClassName();
+
+        $model = new $class;
+        $model::$tableBD = $table;
+
+        if ($model) {
             if ($model::$tableBD->isGeneral())
                 return $model;
             else
@@ -35,5 +127,6 @@ class TableController extends CController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 
 }

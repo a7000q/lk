@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use common\models\limitations\AqLimitations;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -200,5 +201,10 @@ class User extends ActiveRecord implements IdentityInterface
         if (!AuthAssignment::findOne(['item_name' => $role, 'user_id' => $this->id])) return false;
 
         return true;
+    }
+
+    public function getLimitations()
+    {
+        return $this->hasMany(AqLimitations::className(), ['id_user' => 'id']);
     }
 }
