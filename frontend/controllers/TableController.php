@@ -25,7 +25,7 @@ class TableController extends CController
         ];
     }
 
-    public function actionIndex($id)
+    public function actionIndex($id = false)
    {
        $model = $this->findTable($id);
 
@@ -108,6 +108,18 @@ class TableController extends CController
 
     protected function findTable($id)
     {
+        if (!$id)
+        {
+            $tables = Tables::find()->all();
+
+            foreach ($tables as $table)
+                if ($table->isGeneral())
+                {
+                    $id = $table->id;
+                    break;
+                }
+        }
+
         $table = Tables::findOne($id);
 
         if (!$table)

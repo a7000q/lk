@@ -39,4 +39,6 @@ class CController extends Controller
 
         return $this->renderFile('@frontend/views/layouts/main_menu.php', ['items' => $items]);
     }
+
+
 }
