@@ -40,7 +40,6 @@ class AddLimitation extends Model
         $tables = Tables::find()->all();
         $auth = Yii::$app->authManager;
         $result = ArrayHelper::getColumn($tables, function($table) use ($auth){
-            if ($auth->checkAccess($this->id_user, $table->getPermissionName('general')))
                 return ['name' => $table->rus_name, 'id' => $table->id];
         });
 
