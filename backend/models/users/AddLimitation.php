@@ -57,8 +57,7 @@ class AddLimitation extends Model
         $auth = Yii::$app->authManager;
 
         $result = ArrayHelper::getColumn($fields, function($field) use ($auth){
-            if ($auth->checkAccess($this->id_user, $field->getPermissionName('general')))
-                return ['name' => $field->rus_name, 'id' => $field->id];
+            return ['name' => $field->rus_name, 'id' => $field->id];
         });
 
         $result = ArrayHelper::map($result, 'id', 'name');
