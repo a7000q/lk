@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Содание категории';
+$this->title = 'Создание категории';
 $this->params['breadcrumbs'][] = ['label' => 'Категории', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
