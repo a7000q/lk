@@ -97,9 +97,17 @@ class SearchModel extends Model
         if ($this->generalInput)
         {
             $fields = $model::$tableBD->fields;
+            $r_where = ['or'];
 
-            foreach ($fields as $field)
-                $query = $query->addWhereGeneral($field, $this->generalInput);
+            foreach ($fields as $field) {
+                $where = $query->addWhereGeneral($field, $this->generalInput);
+
+                if ($where)
+                    $r_where[] = ArrayHelper::merge($r_where, $where);
+            }
+
+
+            $query = $query->andWhere($r_where);
         }
 
         return new ActiveDataProvider([

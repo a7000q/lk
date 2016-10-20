@@ -211,7 +211,7 @@ class LimitationsQuery extends ActiveQuery
 
     public function addWhereGeneral($field, $value)
     {
-        $result = $this;
+        $result = false;
         switch ($field->type->name)
         {
            case "integer":
@@ -224,20 +224,24 @@ class LimitationsQuery extends ActiveQuery
                $result = $this->addWhereLink($field, $value);
                break;
         }
-
-       return $result;
+        return $result;
     }
 
     private function addWhereInteger($field, $value)
     {
+        if (!is_int($value))
+            return false;
+
         $field_name = $field->table->name.".".$field->name;
-        return $this->orWhere([$field_name => $value]);
+        $result = ["$field_name = $value"];
+        return $result;
     }
 
     private function addWhereText($field, $value)
     {
         $field_name = $field->table->name.".".$field->name;
-        return $this->orWhere(['like', $field_name, $value]);
+        $result = ["$field_name like '%$value%'"];
+        return $result;
     }
 
     private function addWhereLink($field, $value)
@@ -245,7 +249,7 @@ class LimitationsQuery extends ActiveQuery
         $link = FieldLink::findOne(['id_field' => $field->id]);
         $field_name = $field->attributeLinkName;
 
-        $result = $this->joinWith($field_name);
+        $result = $this->innerJoinWith($field_name);
         $result = $result->addWhereGeneral($link->fieldVisible, $value);
 
         return $result;
