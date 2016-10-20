@@ -55,12 +55,34 @@ class TableActiveRecords extends \yii\db\ActiveRecord
                 case "dateText":
                     return $this->getDateText($param[0], $param[1]);
                     break;
+                case "link":
+                    return $this->getLinkFieldTable($param[1]);
+                    break;
                 default:
                     break;
             }
         }
 
         return parent::__get($name);
+    }
+
+    public function __call($name, $params)
+    {
+        $param = explode("__", $name);
+
+        if (isset($param[2]))
+        {
+            switch ($param[2])
+            {
+                case "link":
+                    return $this->getLinkFieldTable($param[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return parent::__call($name, $params);
     }
 
     public function __set($name, $value)
@@ -76,6 +98,9 @@ class TableActiveRecords extends \yii\db\ActiveRecord
                     break;
                 case "dateText":
                     $this->setDateText($param[0], $param[1], $value);
+                    break;
+                case "link":
+                    $this->getLinkFieldTable($param[1]);
                     break;
                 default:
                     break;
@@ -127,11 +152,36 @@ class TableActiveRecords extends \yii\db\ActiveRecord
 
             $result = $this->hasOne($class, [$field_ref_name => $field_name])->one();
 
+            if ($link->fieldVisible->type->name == "link")
+                return $result->getLink($link->fieldVisible->id);
+
             return ArrayHelper::getValue($result, $field_visible_name);
         }
         else
             return false;
 
+    }
+
+    public function getLinkFieldTable($id_field)
+    {
+        $link = FieldLink::findOne(['id_field' => $id_field]);
+
+        if ($link)
+        {
+            $table = $link->fieldRef->table;
+
+            $field_name = $link->field->name;
+            $field_ref_name = $link->fieldRef->name;
+            $field_visible_name = $link->fieldVisible->name;
+
+            $class = $table->getClassName();
+
+            $result = $this->hasMany($class, [$field_ref_name => $field_name]);
+
+            return $result;
+        }
+        else
+            return false;
     }
 
     public static function find()
@@ -158,4 +208,48 @@ class LimitationsQuery extends ActiveQuery
 
        return $this;
    }
+
+    public function addWhereGeneral($field, $value)
+    {
+        $result = $this;
+        switch ($field->type->name)
+        {
+           case "integer":
+               $result = $this->addWhereInteger($field, $value);
+               break;
+           case "text":
+               $result = $this->addWhereText($field, $value);
+               break;
+           case "link":
+               $result = $this->addWhereLink($field, $value);
+               break;
+        }
+
+       return $result;
+    }
+
+    private function addWhereInteger($field, $value)
+    {
+        $field_name = $field->table->name.".".$field->name;
+        return $this->orWhere([$field_name => $value]);
+    }
+
+    private function addWhereText($field, $value)
+    {
+        $field_name = $field->table->name.".".$field->name;
+        return $this->orWhere(['like', $field_name, $value]);
+    }
+
+    private function addWhereLink($field, $value)
+    {
+        $link = FieldLink::findOne(['id_field' => $field->id]);
+        $field_name = $field->attributeLinkName;
+
+        $result = $this->joinWith($field_name);
+        $result = $result->addWhereGeneral($link->fieldVisible, $value);
+
+        return $result;
+    }
+
+
 }

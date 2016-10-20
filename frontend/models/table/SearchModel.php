@@ -14,6 +14,7 @@ class SearchModel extends Model
 {
     public $id_table;
     private $fields;
+    public $generalInput;
 
     public function getFieldFilters()
     {
@@ -36,7 +37,9 @@ class SearchModel extends Model
                 $result = ArrayHelper::merge($result, $attribut);
         }
 
-        return $result;
+        return ArrayHelper::merge($result, [
+            'generalInput' => 'Глобальный поиск'
+        ]);
     }
 
     public function rules()
@@ -50,7 +53,9 @@ class SearchModel extends Model
                 $result[] = $rule;
         }
 
-        return $result;
+        return ArrayHelper::merge($result, [
+            ['generalInput', 'safe']
+        ]);
     }
 
     public function __get($name)
@@ -87,6 +92,14 @@ class SearchModel extends Model
                 if ($where)
                     $query = $query->andWhere($where);
             }
+        }
+
+        if ($this->generalInput)
+        {
+            $fields = $model::$tableBD->fields;
+
+            foreach ($fields as $field)
+                $query = $query->addWhereGeneral($field, $this->generalInput);
         }
 
         return new ActiveDataProvider([

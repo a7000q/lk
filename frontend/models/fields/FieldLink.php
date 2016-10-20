@@ -5,18 +5,37 @@ namespace frontend\models\fields;
 
 use common\models\fields\AqFieldLink;
 use yii\helpers\ArrayHelper;
-use yii\db\Query;
+use Yii;
 
 class FieldLink extends AqFieldLink
 {
     public function getDataArray()
     {
-        $table_name = $this->fieldRef->table->name;
+        $table = $this->fieldRef->table;
         $field_ref = $this->fieldRef->name;
         $field_visible = $this->fieldVisible->name;
 
-        $data = (new Query())->select([$field_ref, $field_visible])->from($table_name)->all();
+        if ($this->fieldVisible->type->name == "link")
+            return $this->fieldVisible->typeLink->dataArray;
 
-        return ArrayHelper::map($data, $field_ref, $field_visible);
+        $class = $table->getClassName();
+        $model = $class::find()->filterLimitations(Yii::$app->user->id, $table->id)->all();
+
+        return ArrayHelper::map($model, $field_ref, $field_visible);
+    }
+
+    public function getField()
+    {
+        return $this->hasOne(Fields::className(), ['id' => 'id_field']);
+    }
+
+    public function getFieldRef()
+    {
+        return $this->hasOne(Fields::className(), ['id' => 'id_field_ref']);
+    }
+
+    public function getFieldVisible()
+    {
+        return $this->hasOne(Fields::className(), ['id' => 'id_field_visible']);
     }
 }

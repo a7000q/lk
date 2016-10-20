@@ -104,7 +104,12 @@ class Fields extends \common\models\fields\AqFields
         return [
             'attribute' => $this->attributeName,
             'content' => function($data) use ($name){
-                return date($this->typeDate->format, $data->$name);
+                if ($this->typeDate)
+                    $format = $this->typeDate->format;
+                else
+                    $format = "d.m.Y H:i:s";
+
+                return date($format, $data->$name);
             }
         ];
     }
@@ -158,7 +163,7 @@ class Fields extends \common\models\fields\AqFields
     public function getRuleDate()
     {
         $result[] = [$this->attributeName, 'integer'];
-        $result[] = [$this->attributeDateName, 'date', 'format' => 'php:'.$this->typeDate->format];
+        $result[] = [$this->attributeDateName, 'date', 'format' => 'php:'.ArrayHelper::getValue($this, "typeDate.format", "d.m.Y H:i:s")];
 
         return $result;
     }
@@ -228,6 +233,18 @@ class Fields extends \common\models\fields\AqFields
     public function getAttributeDateName()
     {
         return $this->name."__".$this->id."__dateText";
+    }
+
+    public function getAttributeLinkName()
+    {
+        $parent_link = FieldLink::findOne(['id_field_visible' => $this->id]);
+
+        $name = $this->name."__".$this->id."__link";
+
+        if ($parent_link)
+            $name = $parent_link->field->attributeLinkName.".".$name;
+
+        return $name;
     }
 
     public function getTypeLink()

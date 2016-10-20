@@ -28,9 +28,20 @@ class TableController extends CController
 
     public function actionIndex($id = false)
    {
+       if (!$id)
+       {
+           $tables = Tables::find()->all();
+
+           foreach ($tables as $table)
+               if ($table->isGeneral())
+               {
+                   $id = $table->id;
+                   break;
+               }
+       }
+
        $model = $this->findTable($id);
 
-       $query = $model::find()->filterLimitations(Yii::$app->user->id, $model::$tableBD->id);
        $get = Yii::$app->request->get();
 
        $searchModel = new SearchModel(['id_table' => $id]);
