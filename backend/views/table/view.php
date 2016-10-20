@@ -41,6 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Поля',
                 'content' => $this->render('@backend/views/field/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Фильтры',
+                'content' => $this->render('@backend/views/filter/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

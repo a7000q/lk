@@ -6,6 +6,7 @@ use yii\data\ActiveDataProvider;
 use backend\models\fields\Fields;
 use yii;
 use backend\models\generate\Generate;
+use backend\models\filters\Filters;
 
 
 class Tables extends \common\models\tables\AqTables
@@ -17,6 +18,13 @@ class Tables extends \common\models\tables\AqTables
                 'query' => Fields::find()->where(['id_table' => $this->id])
             ]
         );
+    }
+
+    public function getFiltersDataProvider()
+    {
+        return new ActiveDataProvider([
+            'query' => Filters::find()->where(['id_table' => $this->id])
+        ]);
     }
 
     static public function getAllArray()
@@ -158,5 +166,6 @@ class Tables extends \common\models\tables\AqTables
             return false;
 
         unlink($file_name);
+        return true;
     }
 }

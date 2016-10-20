@@ -2,6 +2,7 @@
 
 namespace common\models\fields;
 
+use backend\models\filters\Filters;
 use common\models\limitations\AqLimitations;
 use Yii;
 use common\models\tables\AqTables;
@@ -76,5 +77,10 @@ class AqFields extends \yii\db\ActiveRecord
     public function getAqLimitations()
     {
         return $this->hasMany(AqLimitations::className(), ['id_field' => 'id']);
+    }
+
+    public function getFilters()
+    {
+        return $this->hasMany(Filters::className(), ['id_field' => 'id']);
     }
 }

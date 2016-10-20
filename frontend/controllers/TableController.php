@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\models\table\SearchModel;
 use Yii;
 use frontend\models\tables\Tables;
 use yii\web\ForbiddenHttpException;
@@ -30,13 +31,14 @@ class TableController extends CController
        $model = $this->findTable($id);
 
        $query = $model::find()->filterLimitations(Yii::$app->user->id, $model::$tableBD->id);
+       $get = Yii::$app->request->get();
 
-       $dataProvider = new ActiveDataProvider([
-           'query' => $query
-       ]);
+       $searchModel = new SearchModel(['id_table' => $id]);
+
+       $dataProvider = $searchModel->search($get);
 
        return $this->render('index', [
-           'dataProvider' => $dataProvider, 'model' => $model
+           'dataProvider' => $dataProvider, 'model' => $model, 'searchModel' => $searchModel
        ]);
    }
 

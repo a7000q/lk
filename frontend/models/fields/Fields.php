@@ -4,6 +4,7 @@
 namespace frontend\models\fields;
 
 use kartik\detail\DetailView;
+use kartik\grid\GridView;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -79,7 +80,7 @@ class Fields extends \common\models\fields\AqFields
         return [
             'attribute' => $this->attributeName,
             'value' => date($this->typeDate->format, $model->$name),
-            'displayOnly' => ($this->isUpdate())?false:true
+            'displayOnly' => ($this->isUpdate())?false:true,
         ];
     }
 

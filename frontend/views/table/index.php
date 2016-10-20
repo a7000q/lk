@@ -8,6 +8,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tables-index">
 
+    <?=$this->render('_search', ['searchModel' => $searchModel])?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'panel' => [
