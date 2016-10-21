@@ -202,8 +202,22 @@ class LimitationsQuery extends ActiveQuery
            $field_name = $limitation->field->name;
            $operand = $limitation->operand;
            $value = $limitation->value;
+           $r_where[$field_name][] = ['operand' => $operand, 'value' => $value];
+       }
 
-           $this->andWhere([$operand, $field_name, $value]);
+       if (isset($r_where))
+       {
+           foreach ($r_where as $field_name => $where)
+           {
+               foreach ($where as $wh)
+               {
+                   $f_where[] = [$wh["operand"], $field_name, $wh["value"]];
+               }
+
+               $f_where = ArrayHelper::merge(['or'], $f_where);
+
+               $this->andWhere($f_where);
+           }
        }
 
        return $this;
