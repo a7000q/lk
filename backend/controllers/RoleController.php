@@ -62,7 +62,6 @@ class RoleController extends CController
     public function actionView($id)
     {
         $auth = Yii::$app->authManager;
-        $role = $auth->getRole($id);
         $model = new UpdateRoleForm();
         $model->last_name = $id;
         $model->loadModel($auth);

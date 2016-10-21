@@ -5,7 +5,7 @@ use yii\helpers\Url;
 ?>
 
 <?
-    $tables = PermissionTables::find()->all();
+    $tables = PermissionTables::find()->where(['<>', 'name', ''])->andWhere(['<>', 'rus_name', ''])->all();
     $items = array();
     foreach ($tables as $table)
     {
