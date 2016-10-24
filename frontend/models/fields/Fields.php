@@ -3,6 +3,7 @@
 
 namespace frontend\models\fields;
 
+use backend\models\fields\FieldScripts;
 use kartik\detail\DetailView;
 use kartik\grid\GridView;
 use kartik\select2\Select2;
@@ -38,6 +39,9 @@ class Fields extends \common\models\fields\AqFields
                 case "link":
                     $result = $this->getLinkColumn();
                     break;
+                case "calculate":
+                    $result = $this->attributeCalculateName;
+                    break;
                 default:
                     $result = $this->attributeName;
                     break;
@@ -57,6 +61,9 @@ class Fields extends \common\models\fields\AqFields
                 case "link":
                     $result = $this->getLinkAttribute($model);
                     break;
+                case "calculate":
+                    $result = $this->getCalculateAttribute($model);
+                    break;
                 default:
                     $result = $this->getGeneralAttribute($model);
                     break;
@@ -70,6 +77,14 @@ class Fields extends \common\models\fields\AqFields
     {
         return [
             'attribute' => $this->attributeName,
+            'displayOnly' => ($this->isUpdate())?false:true
+        ];
+    }
+
+    private function getCalculateAttribute($model)
+    {
+        return [
+            'attribute' => $this->attributeCalculateName,
             'displayOnly' => ($this->isUpdate())?false:true
         ];
     }
@@ -141,6 +156,9 @@ class Fields extends \common\models\fields\AqFields
             case "link":
                 $result = $this->getRuleLink();
                 break;
+            case "calculate":
+                $result = $this->getRuleCalculate();
+                break;
         }
 
         return $result;
@@ -149,6 +167,13 @@ class Fields extends \common\models\fields\AqFields
     public function getRuleInteger()
     {
         $result[] = [$this->attributeName, 'integer'];
+
+        return $result;
+    }
+
+    public function getRuleCalculate()
+    {
+        $result[] = [$this->attributeCalculateName, 'safe'];
 
         return $result;
     }
@@ -191,6 +216,9 @@ class Fields extends \common\models\fields\AqFields
             case "link":
                 $result = $this->getAttributeLink();
                 break;
+            case "calculate":
+                $result = $this->getAttributeCalculate();
+                break;
         }
 
         return $result;
@@ -225,6 +253,37 @@ class Fields extends \common\models\fields\AqFields
         return $result;
     }
 
+    public function getAttributeCalculate()
+    {
+        $result[] = [$this->attributeCalculateName => $this->rus_name];
+
+        return $result;
+    }
+
+    public function getAttributeNameMain()
+    {
+        switch ($this->type->name)
+        {
+            case  "integer":
+                $result = $this->getAttributeName();
+                break;
+            case "text":
+                $result = $this->getAttributeName();
+                break;
+            case "date":
+                $result = $this->getAttributeDateName();
+                break;
+            case "link":
+                $result = $this->getAttributeLinkName();
+                break;
+            case "calculate":
+                $result = $this->getAttributeCalculateName();
+                break;
+        }
+
+        return $result;
+    }
+
     public function getAttributeName()
     {
         return $this->name."__".$this->id."__general";
@@ -233,6 +292,11 @@ class Fields extends \common\models\fields\AqFields
     public function getAttributeDateName()
     {
         return $this->name."__".$this->id."__dateText";
+    }
+
+    public function getAttributeCalculateName()
+    {
+        return $this->name."__".$this->id."__calculate";
     }
 
     public function getAttributeLinkName()
@@ -250,5 +314,10 @@ class Fields extends \common\models\fields\AqFields
     public function getTypeLink()
     {
         return $this->hasOne(FieldLink::className(), ['id_field' => 'id']);
+    }
+
+    public function getScriptView()
+    {
+        return $this->hasOne(FieldScripts::className(), ['id_field' => 'id'])->where(['type' => 'view']);
     }
 }

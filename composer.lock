@@ -4,9 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1601c91f389279672b1ca2a0e591eb7f",
-    "content-hash": "bbadbe50b63ec914a7993cebeb89b7e5",
+    "hash": "387afb48d531d02c8cea1afc824d0c0c",
+    "content-hash": "ba85feae85c094ee40c2c95199c3fe1e",
     "packages": [
+        {
+            "name": "bower-asset/ace-builds",
+            "version": "v1.1.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ajaxorg/ace-builds.git",
+                "reference": "e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f",
+                "reference": "e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f",
+                "shasum": ""
+            },
+            "type": "bower-asset-library"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.7",
@@ -1420,6 +1436,48 @@
                 "mailer"
             ],
             "time": "2016-07-08 11:51:25"
+        },
+        {
+            "name": "trntv/yii2-aceeditor",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trntv/yii2-aceeditor.git",
+                "reference": "ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trntv/yii2-aceeditor/zipball/ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57",
+                "reference": "ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/ace-builds": "~1.1.8",
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "trntv\\aceeditor\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Eugine Terentev",
+                    "email": "eugine@terentev.net"
+                }
+            ],
+            "description": "Yii2 ajax.org Ace Editor widget",
+            "keywords": [
+                "aceeditor",
+                "code editor",
+                "yii"
+            ],
+            "time": "2014-12-18 18:07:28"
         },
         {
             "name": "yiisoft/yii2",

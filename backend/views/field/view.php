@@ -2,6 +2,9 @@
 use kartik\detail\DetailView;
 use kartik\tabs\TabsX;
 use yii\helpers\ArrayHelper;
+use kartik\form\ActiveForm;
+use trntv\aceeditor;
+use kartik\helpers\Html;
 
 $this->title = $model->rus_name;
 $this->params['breadcrumbs'][] = ['label' => 'Категории', 'url' => ['category/index']];
@@ -54,6 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 break;
             case "link":
                 echo $this->render('link', ['model' => $model]);
+                break;
+            case "calculate":
+                echo $this->render('calculate', ['model' => $model]);
                 break;
             default:
                 break;

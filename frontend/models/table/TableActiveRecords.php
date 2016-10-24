@@ -10,6 +10,7 @@ use frontend\models\tables\Tables;
 use yii\helpers\ArrayHelper;
 use frontend\models\fields\FieldLink;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 class TableActiveRecords extends \yii\db\ActiveRecord
 {
@@ -41,7 +42,7 @@ class TableActiveRecords extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public function __get($name)
+    private function getFieldScript($name)
     {
         $param = explode("__", $name);
 
@@ -56,7 +57,41 @@ class TableActiveRecords extends \yii\db\ActiveRecord
                     return $this->getDateText($param[0], $param[1]);
                     break;
                 case "link":
+                    return $this->getLink($param[1]);
+                    break;
+                case "calculate":
+                    return $this->getCalculateField($param[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public function __get($name)
+    {
+        $field = Fields::find()->where(['=', 'rus_name', $name])->andWhere(['<>', 'rus_name', 'id'])->andWhere(['id_table' => $this::$tableBD->id])->one();
+
+        if ($field)
+            return $this->getFieldScript($field->attributeNameMain);
+
+        $param = explode("__", $name);
+
+        if (isset($param[2]))
+        {
+            switch ($param[2])
+            {
+                case "general":
+                    return $this->getGeneral($param[0], $param[1]);
+                    break;
+                case "dateText":
+                    return $this->getDateText($param[0], $param[1]);
+                    break;
+                case "link":
                     return $this->getLinkFieldTable($param[1]);
+                    break;
+                case "calculate":
+                    return $this->getCalculateField($param[1]);
                     break;
                 default:
                     break;
@@ -108,6 +143,14 @@ class TableActiveRecords extends \yii\db\ActiveRecord
         }
         else
             return parent::__set($name, $value);
+    }
+
+    private function getCalculateField($id_field)
+    {
+        $field = Fields::findOne($id_field);
+
+        $script = ArrayHelper::getValue($field, "scriptView.code");
+        return eval($script);
     }
 
     private function getDateText($name, $id_field)

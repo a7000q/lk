@@ -107,4 +107,9 @@ class Fields extends \common\models\fields\AqFields
         return $this->hasOne(FieldLink::className(), ['id_field' => 'id']);
     }
 
+    public function getScriptView()
+    {
+        return $this->hasOne(FieldScripts::className(), ['id_field' => 'id'])->where(['type' => 'view']);
+    }
+
 }

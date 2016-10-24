@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\fields\FieldScripts;
 use backend\models\fields\LinkType;
 use backend\models\tables\Tables;
 use kartik\grid\EditableColumnAction;
@@ -123,6 +124,33 @@ class FieldController extends CController
 
     }
 
+    public function actionAddScript($id_field, $type)
+    {
+        $field = $this->findModel($id_field);
+        $script = $this->findFieldScript($field, $type);
+
+        if ($script)
+            $this->redirect(['view', 'id' => $id_field]);
+
+        $script = new FieldScripts(['id_field' => $id_field, 'type' => $type]);
+        $script->save();
+        $this->redirect(['view', 'id' => $id_field]);
+    }
+
+    public function actionUpdateScript($id_script)
+    {
+        $script = $this->findScript($id_script);
+        $post = Yii::$app->request->post();
+
+        if (isset($post['save']))
+        {
+            $script->load($post);
+            $script->save();
+
+            $this->redirect(['view', 'id' => $script->id_field]);
+        }
+    }
+
     protected function findModel($id)
     {
         if (($model = Fields::findOne($id)) !== null) {
@@ -132,4 +160,24 @@ class FieldController extends CController
         }
     }
 
+    protected function findFieldScript($field, $type)
+    {
+        switch ($type) {
+            case "view":
+                return $field->scriptView;
+                break;
+        }
+
+        return false;
+    }
+
+
+    protected function findScript($id)
+    {
+        if (($model = FieldScripts::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }
