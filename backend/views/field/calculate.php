@@ -2,6 +2,7 @@
 use kartik\form\ActiveForm;
 use trntv\aceeditor\AceEditor;
 use kartik\helpers\Html;
+
 ?>
 
 <div class="panel panel-success">
