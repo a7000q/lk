@@ -255,7 +255,7 @@ class LimitationsQuery extends ActiveQuery
                $f_where = array();
                foreach ($where as $wh)
                {
-                   $f_where[] = [$wh["operand"], $field_name."1", $wh["value"]];
+                   $f_where[] = [$wh["operand"], $field_name, $wh["value"]];
                }
 
                $f_where = ArrayHelper::merge(['or'], $f_where);
