@@ -20,6 +20,9 @@ class FieldLink extends AqFieldLink
         $field_ref = $this->fieldRef->name;
         $field_visible = $this->fieldVisible->name;
 
+        if ($this->fieldVisible->type->name == "link")
+            return $this->fieldVisible->typeLink->dataArray;
+
         $data = (new Query())->select([$field_ref, $field_visible])->from($table_name)->all();
 
         return ArrayHelper::map($data, $field_ref, $field_visible);
