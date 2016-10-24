@@ -76,7 +76,7 @@ class TableController extends CController
        if (!$model::$tableBD->isDelete())
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
-       $record = $model::find($id)->one();
+       $record = $model::findOne($id);
 
        if (!$record)
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
@@ -92,7 +92,7 @@ class TableController extends CController
        if (!$table::$tableBD->isView())
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
-       $model = $table::find($id)->one();
+       $model = $table::findOne($id);
 
        if (!$model)
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
