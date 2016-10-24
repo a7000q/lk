@@ -2,8 +2,7 @@
 
 namespace frontend\models\table;
 
-use backend\models\users\Limitations;
-use common\models\limitations\AqLimitations;
+use frontend\models\limitations\Limitations;
 use frontend\models\fields\Fields;
 use Yii;
 use frontend\models\tables\Tables;
@@ -238,11 +237,12 @@ class LimitationsQuery extends ActiveQuery
 {
    public function filterLimitations($id_user, $id_table)
    {
-       $limitations = AqLimitations::find()->joinWith('field')->where(['id_user' => $id_user])->andWhere(['id_table' => $id_table])->all();
+       $limitations = Limitations::find()->joinWith('field')->where(['id_user' => $id_user])->andWhere(['id_table' => $id_table])->all();
 
        foreach ($limitations as $limitation)
        {
-           $field_name = $limitation->field->name;
+           $field = $limitation->field;
+           $field_name = $this->getLName($field);
            $operand = $limitation->operand;
            $value = $limitation->value;
            $r_where[$field_name][] = ['operand' => $operand, 'value' => $value];
@@ -311,6 +311,22 @@ class LimitationsQuery extends ActiveQuery
         $result = $result->addWhereGeneral($link->fieldVisible, $value);
 
         return $result;
+    }
+
+    private function getLName($field, $id_link = false)
+    {
+        if ($field->type->name != "link") {
+            if ($id_link == false)
+                return $this->table->name.".".$this->name;
+
+            $link = FieldLink::findOne($id_link);
+            return $link->field->table->name . "." . $link->field->name;
+        }
+
+        $this->innerJoinWith($field->attributeLinkName);
+
+        $id_link = $field->typeLink->id;
+        return $this->getLName($field->typeLink->fieldVisible, $id_link);
     }
 
 

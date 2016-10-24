@@ -320,4 +320,6 @@ class Fields extends \common\models\fields\AqFields
     {
         return $this->hasOne(FieldScripts::className(), ['id_field' => 'id'])->where(['type' => 'view']);
     }
+
+
 }
