@@ -67,6 +67,6 @@ class Limitations extends AqLimitations
     {
         $field = $this->field;
 
-        return $field->typeLink->dataArray[(int)$this->value];
+        return ArrayHelper::getValue($field->typeLink->dataArray, (int)$this->value);
     }
 }
