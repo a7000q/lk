@@ -252,6 +252,7 @@ class LimitationsQuery extends ActiveQuery
        {
            foreach ($r_where as $field_name => $where)
            {
+               $f_where = array();
                foreach ($where as $wh)
                {
                    $f_where[] = [$wh["operand"], $field_name, $wh["value"]];
