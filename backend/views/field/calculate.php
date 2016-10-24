@@ -1,6 +1,6 @@
 <?
 use kartik\form\ActiveForm;
-use trntv\aceeditor;
+use trntv\aceeditor\AceEditor;
 use kartik\helpers\Html;
 ?>
 
@@ -9,7 +9,7 @@ use kartik\helpers\Html;
     <div class="panel-body">
         <?if ($model->scriptView):?>
             <?$form = ActiveForm::begin(['action' => ['update-script', 'id_script' => $model->scriptView->id]])?>
-            <?=$form->field($model->scriptView, 'code', ['template' => '{input}{error}'])->widget(aceeditor\AceEditor::className(), ['mode' => 'php'])?>
+            <?=$form->field($model->scriptView, 'code', ['template' => '{input}{error}'])->widget(AceEditor::className(), ['mode' => 'php'])?>
             <?=Html::submitButton('Сохранить', ['name' => 'save', 'class' => 'btn btn-success'])?>
             <?ActiveForm::end()?>
         <?else:?>
