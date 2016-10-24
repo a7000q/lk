@@ -317,7 +317,7 @@ class LimitationsQuery extends ActiveQuery
     {
         if ($field->type->name != "link") {
             if ($id_link == false)
-                return $this->table->name.".".$this->name;
+                return $field->table->name.".".$field->name;
 
             $link = FieldLink::findOne($id_link);
             return $link->field->table->name . "." . $link->field->name;
