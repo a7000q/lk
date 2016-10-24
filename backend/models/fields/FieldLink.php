@@ -27,4 +27,9 @@ class FieldLink extends AqFieldLink
 
         return ArrayHelper::map($data, $field_ref, $field_visible);
     }
+
+    public function getFieldVisible()
+    {
+        return $this->hasOne(Fields::className(), ['id' => 'id_field_visible']);
+    }
 }
