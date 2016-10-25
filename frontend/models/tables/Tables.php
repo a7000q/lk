@@ -58,7 +58,7 @@ class Tables extends \common\models\tables\AqTables
 
     public function getFields()
     {
-        return $this->hasMany(Fields::className(), ['id_table' => 'id']);
+        return $this->hasMany(Fields::className(), ['id_table' => 'id'])->orderBy('sort');
     }
 
     public function isUpdate()
