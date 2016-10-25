@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use frontend\models\table\SearchModel;
 use Yii;
 use frontend\models\tables\Tables;
+use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
@@ -16,14 +17,14 @@ class TableController extends CController
 {
     public function behaviors()
     {
-        return [
+        return ArrayHelper::merge(parent::behaviors(), [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
-        ];
+        ]);
     }
 
     public function actionIndex($id = false)
