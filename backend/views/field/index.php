@@ -64,6 +64,16 @@ $this->registerJs(
         ],
         [
             'class' => 'kartik\grid\EditableColumn',
+            'attribute' => 'page_summary',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/field/editrecord']],
+                'inputType' => \kartik\editable\Editable::INPUT_SWITCH
+            ],
+            'value' => function($data) {
+                return ($data->page_summary)?"on":"off";
+            }],
+        [
+            'class' => 'kartik\grid\EditableColumn',
             'attribute' => 'sort',
             'editableOptions'=> [
                 'formOptions' => ['action' => ['/field/editrecord']]

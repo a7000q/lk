@@ -40,15 +40,33 @@ class Fields extends \common\models\fields\AqFields
                     $result = $this->getLinkColumn();
                     break;
                 case "calculate":
-                    $result = $this->attributeCalculateName;
+                    $result = $this->getCalculateColumn();
                     break;
                 default:
-                    $result = $this->attributeName;
+                    $result = $this->getMainColumn();
                     break;
             }
 
             return $result;
         }
+    }
+
+    public function getCalculateColumn()
+    {
+        $name = $this->attributeCalculateName;
+        return [
+            'attribute' => $name,
+            'pageSummary' => $this->page_summary?true:false
+        ];
+    }
+
+    public function getMainColumn()
+    {
+        $name = $this->attributeName;
+        return [
+            'attribute' => $name,
+            'pageSummary' => $this->page_summary?true:false
+        ];
     }
 
     public function getDetailViewAttributes($model)
@@ -136,7 +154,8 @@ class Fields extends \common\models\fields\AqFields
             'attribute' => $this->attributeName,
             'content' => function($data) use ($id_field){
                 return $data->getLink($id_field);
-            }
+            },
+            'pageSummary' => $this->page_summary?true:false
         ];
     }
 

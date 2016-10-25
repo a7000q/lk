@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => $model::$tableBD->gridViewFieldsArray,
         'panelBeforeTemplate' => '{before}{toolbar}',
-        'toolbar' => ['{toggleData}']
-
+        'toolbar' => ['{toggleData}'],
+        'showPageSummary' => true
     ]); ?>
 </div>

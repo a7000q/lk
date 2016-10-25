@@ -27,6 +27,7 @@ class AqFields extends \yii\db\ActiveRecord
             ['sort', 'default', 'value' => 500],
             [['id_table', 'sort', 'id_type'], 'integer'],
             [['name', 'rus_name'], 'string', 'max' => 255],
+            [['page_summary'], 'boolean'],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => AqTables::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
     }
@@ -42,7 +43,8 @@ class AqFields extends \yii\db\ActiveRecord
             'name' => 'Физическое название',
             'rus_name' => 'Название',
             'sort' => 'Сортировка',
-            'id_type' => 'Тип'
+            'id_type' => 'Тип',
+            'page_summary' => 'Итого'
         ];
     }
 

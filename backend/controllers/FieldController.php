@@ -27,6 +27,9 @@ class FieldController extends CController
                         case "id_type":
                             $result = ArrayHelper::getValue($model, "type.name");
                             break;
+                        case "page_summary":
+                            $result = ($model->page_summary)?"on":"off";
+                            break;
                         default:
                             $result = $model->$attribute;
                             break;
