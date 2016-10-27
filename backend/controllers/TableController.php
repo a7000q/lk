@@ -6,6 +6,7 @@ use backend\models\bd\BD;
 use backend\models\category\Category;
 use backend\models\fields\Fields;
 use backend\models\filters\Filters;
+use backend\models\tables\TableLink;
 use Yii;
 use backend\models\tables\Tables;
 use yii\data\ActiveDataProvider;
@@ -80,6 +81,9 @@ class TableController extends CController
 
         if (isset($post['create-filter']))
             Filters::newFilter($id);
+
+        if (isset($post['create-table-link']))
+            TableLink::newTableLink($id);
 
         return $this->render('view', [
             'model' => $model,

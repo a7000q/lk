@@ -53,4 +53,5 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\
     {
         return parent::one($db);
     }
+
 }

@@ -27,6 +27,13 @@ class Tables extends \common\models\tables\AqTables
         ]);
     }
 
+    public function getTableLinkDataProvider()
+    {
+        return new ActiveDataProvider([
+            'query' => TableLink::find()->where(['id_table' => $this->id])
+        ]);
+    }
+
     static public function getAllArray()
     {
         return yii\helpers\ArrayHelper::map(static::find()->all(), 'id', 'rus_name');

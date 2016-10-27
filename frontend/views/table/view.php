@@ -18,10 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'heading'=>'Таблица # ' . $table->rus_name,
             'type'=>DetailView::TYPE_INFO,
         ],
-        'attributes'=>$model::$tableBD->getDetailViewAttributesArray($model),
+        'attributes'=> $table->getDetailViewAttributesArray($model),
         'deleteOptions'=>[
             'params' => ['id' => $model->id, 'kvdelete'=>true],
         ],
 
     ]) ?>
 </div>
+
+<?if ($model::$tableBD->tableLinks):?>
+    <?=$this->render('table-link/index', ['model' => $model]);?>
+<?endif;?>
+
+

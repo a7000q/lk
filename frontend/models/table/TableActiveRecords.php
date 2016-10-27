@@ -10,10 +10,11 @@ use yii\helpers\ArrayHelper;
 use frontend\models\fields\FieldLink;
 use yii\db\ActiveQuery;
 use yii\db\Query;
+use yii\data\ActiveDataProvider;
 
 class TableActiveRecords extends \yii\db\ActiveRecord
 {
-    public static $tableBD;
+    static $tableBD;
 
     public function attributeLabels()
     {
@@ -191,6 +192,7 @@ class TableActiveRecords extends \yii\db\ActiveRecord
             $field_visible_name = $link->fieldVisible->name;
 
             $class = $table->getClassName();
+            $class::$tableBD = $table;
 
             $result = $this->hasOne($class, [$field_ref_name => $field_name])->one();
 
@@ -217,6 +219,7 @@ class TableActiveRecords extends \yii\db\ActiveRecord
             $field_visible_name = $link->fieldVisible->name;
 
             $class = $table->getClassName();
+            $class::$tableBD = $table;
 
             $result = $this->hasMany($class, [$field_ref_name => $field_name]);
 
@@ -224,6 +227,26 @@ class TableActiveRecords extends \yii\db\ActiveRecord
         }
         else
             return false;
+    }
+
+    public function getLinkTableLink($link)
+    {
+        $class = $link->tableRef->getClassName();
+
+        $class::$tableBD = $link->tableRef;
+
+        $field_name = $link->fieldRef->name;
+
+        $result = $this->hasMany($class::className(), [$field_name => $link->field->attributeNameMain]);
+
+        return $result;
+    }
+
+    public function getLinkTableLinkDataProvider($link)
+    {
+        return new ActiveDataProvider([
+            'query' => $this->getLinkTableLink($link)
+        ]);
     }
 
     public static function find()

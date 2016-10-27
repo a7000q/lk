@@ -5,6 +5,7 @@ namespace frontend\models\fields;
 
 use backend\models\fields\FieldScripts;
 use kartik\detail\DetailView;
+use kartik\editable\Editable;
 use kartik\grid\GridView;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -51,6 +52,28 @@ class Fields extends \common\models\fields\AqFields
         }
     }
 
+    public function getEditGridViewColumn()
+    {
+        if ($this->type) {
+            switch ($this->type->name) {
+                case "date":
+                    $result = $this->getEditDateColumn();
+                    break;
+                case "link":
+                    $result = $this->getEditLinkColumn();
+                    break;
+                case "calculate":
+                    $result = $this->getEditCalculateColumn();
+                    break;
+                default:
+                    $result = $this->getEditMainColumn();
+                    break;
+            }
+
+            return $result;
+        }
+    }
+
     public function getCalculateColumn()
     {
         $name = $this->attributeCalculateName;
@@ -66,6 +89,68 @@ class Fields extends \common\models\fields\AqFields
         return [
             'attribute' => $name,
             'pageSummary' => $this->page_summary?true:false
+        ];
+    }
+
+    public function getEditMainColumn()
+    {
+        $name = $this->attributeName;
+        return [
+            'attribute' => $name,
+            'class' => 'kartik\grid\EditableColumn',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord', 'id_table_editrecord' => $this->table->id, 'id_field_editrecord' => $this->id]],
+            ],
+            'readonly' => ($this->isUpdate())?false:true
+        ];
+    }
+
+    public function getEditCalculateColumn()
+    {
+        $name = $this->attributeCalculateName;
+        return [
+            'attribute' => $name,
+            'readonly' => true
+        ];
+    }
+
+    private function getEditDateColumn()
+    {
+        $name = $this->attributeName;
+        $field = $this;
+        return [
+            'attribute' => $name,
+            'class' => 'kartik\grid\EditableColumn',
+            'readonly' => ($this->isUpdate())?false:true,
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord', 'id_table_editrecord' => $this->table->id, 'id_field_editrecord' => $field->id]],
+                'inputType' => Editable::INPUT_DATE
+            ],
+            'value' => function($data) use ($field){
+                $format = $field->typeDate->format;
+                return date($format, $data->{$field->name});
+            },
+        ];
+    }
+
+    private function getEditLinkColumn()
+    {
+        $dtArray = $this->typeLink->dataArray;
+        $name = $this->attributeName;
+        return [
+            'attribute' => $name,
+            'readonly' => ($this->isUpdate())?false:true,
+            'class' => 'kartik\grid\EditableColumn',
+            'editableOptions'=> [
+                'formOptions' => ['action' => ['/table/editrecord', 'id_table_editrecord' => $this->table->id, 'id_field_editrecord' => $this->id]],
+                'inputType' => Editable::INPUT_SELECT2,
+                'options' => [
+                    'data' => $dtArray
+                ]
+            ],
+            'value' => function($data) use ($dtArray, $name){
+                return ArrayHelper::getValue($dtArray, $data->$name);
+            }
         ];
     }
 
@@ -326,6 +411,18 @@ class Fields extends \common\models\fields\AqFields
 
         if ($parent_link)
             $name = $parent_link->field->attributeLinkName.".".$name;
+
+        return $name;
+    }
+
+    public function getAttrLinkName()
+    {
+        $parent_link = FieldLink::findOne(['id_field' => $this->id]);
+
+        $name = $this->getAttributeNameMain();
+
+        if ($parent_link)
+            $name = $parent_link->fieldRef->table->name.".".$parent_link->fieldRef->attrLinkName;
 
         return $name;
     }

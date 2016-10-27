@@ -35,6 +35,7 @@ use Yii;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
+    static $tableBD;
     /**
      * @inheritdoc
      */

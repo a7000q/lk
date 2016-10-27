@@ -39,6 +39,35 @@ class Tables extends \common\models\tables\AqTables
         return $result;
     }
 
+    public function getEditGridViewColumns($link)
+    {
+        $fields = $this->fields;
+
+        $result = ArrayHelper::getColumn($fields, function($element) use ($link){
+            if ($element->isGeneral() and ($element->id != $link->id_field_ref))
+                return $element->editGridViewColumn;
+        });
+
+        $result = array_filter($result);
+
+        if (count($result) == 0)
+            return false;
+
+        if ($this->isDelete())
+            $result[] = [
+                'class' => 'kartik\grid\ActionColumn',
+                'template' => '{delete}',
+                'visibleButtons' => [
+                    'delete' => $this->isDelete()
+                ],
+                'urlCreator' => function($action, $model, $key, $index){
+                    return [$action, 'id' => $model->id, 'id_table' => $this->id];
+                }
+            ];
+
+        return $result;
+    }
+
     public function getDetailViewAttributesArray($model)
     {
         $fields = $this->fields;
@@ -59,6 +88,11 @@ class Tables extends \common\models\tables\AqTables
     public function getFields()
     {
         return $this->hasMany(Fields::className(), ['id_table' => 'id'])->orderBy('sort');
+    }
+
+    public function getTableLinks()
+    {
+        return $this->hasMany(TableLink::className(), ['id_table' => 'id']);
     }
 
     public function isUpdate()

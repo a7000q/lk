@@ -1,29 +1,78 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\models\fields\Fields;
 use frontend\models\table\SearchModel;
 use Yii;
 use frontend\models\tables\Tables;
-use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use kartik\helpers\Html;
-
+use yii\helpers\ArrayHelper;
+use kartik\grid\EditableColumnAction;
 
 class TableController extends CController
 {
     public function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
+        return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
+        ];
+    }
+
+    public function actions()
+    {
+        $get = Yii::$app->request->get();
+
+        $class = false;
+        $id_field = false;
+        if (isset($get['id_table_editrecord']))
+        {
+            $id_table = ArrayHelper::getValue($get, "id_table_editrecord");
+            $id_field = ArrayHelper::getValue($get, "id_field_editrecord");
+            $table = Tables::findOne($id_table);
+            $class = $table->getClassName();
+            $class::$tableBD = $table;
+        }
+
+        return ArrayHelper::merge(parent::actions(), [
+            'editrecord' => [
+                'class' => EditableColumnAction::className(),
+                'modelClass' => ($class)?$class::className():'',
+                'outputValue' => function ($model, $attribute, $key, $index) use ($id_field) {
+                    $field = Fields::findOne($id_field);
+                    switch ($field->type->name)
+                    {
+                        case "link":
+                            $result = ArrayHelper::getValue($field->typeLink->dataArray, $model->$attribute);
+                            break;
+                        case "date":
+                            $result = date($field->typeDate->format, $model->$attribute);
+                            break;
+                        default:
+                            $result = $model->$attribute;
+                            break;
+                    }
+                    return  $result;
+                },
+                'outputMessage' => function($model, $attribute, $key, $index) {
+                    return '';
+                },
+                'showModelErrors' => true,
+                'errorOptions' => ['header' => ''],
+                // 'postOnly' => true,
+                // 'ajaxOnly' => true,
+                //'findModel' => function($id, $action) {print_r($action);},
+                // 'checkAccess' => function($action, $model) {}
+            ]
         ]);
     }
 
@@ -77,7 +126,7 @@ class TableController extends CController
        if (!$model::$tableBD->isDelete())
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
-       $record = $model::findOne($id);
+       $record = $model::find($id)->one();
 
        if (!$record)
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');

@@ -19,6 +19,7 @@ class FieldLink extends AqFieldLink
             return $this->fieldVisible->typeLink->dataArray;
 
         $class = $table->getClassName();
+        $class::$tableBD = $table;
         $model = $class::find()->filterLimitations(Yii::$app->user->id, $table->id)->all();
 
         return ArrayHelper::map($model, $field_ref, $field_visible);

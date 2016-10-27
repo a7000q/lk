@@ -45,6 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Фильтры',
                 'content' => $this->render('@backend/views/filter/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Связанные таблицы',
+                'content' => $this->render('@backend/views/table-link/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,
