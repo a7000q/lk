@@ -18,8 +18,9 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'loginUrl' => ['/site/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
