@@ -4,24 +4,33 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "83981e6acea1b899ae436aa462285cb4",
-    "content-hash": "6d6f72bb52a41b1f7b12b3425b8c22c8",
+    "hash": "51ce839221a072d907dec9e98e27bf74",
+    "content-hash": "448d7c6226beedb39f2cdad4c694618d",
     "packages": [
         {
             "name": "bower-asset/ace-builds",
-            "version": "v1.1.9",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ajaxorg/ace-builds.git",
-                "reference": "e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f"
+                "reference": "21f7fa46ece12f8c425a5563784b3bf3fe84117d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f",
-                "reference": "e3ccd2c654cf45ee41ffb09d0e7fa5b40cf91a8f",
+                "url": "https://api.github.com/repos/ajaxorg/ace-builds/zipball/21f7fa46ece12f8c425a5563784b3bf3fe84117d",
+                "reference": "21f7fa46ece12f8c425a5563784b3bf3fe84117d",
                 "shasum": ""
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-ignore": [
+                    "demo"
+                ]
+            },
+            "license": [
+                "BSD"
+            ],
+            "description": "Ace (Ajax.org Cloud9 Editor)"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -755,12 +764,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-grid.git",
-                "reference": "7cca20a27234207d6d114a39a3263ae9c88fd171"
+                "reference": "ff39cb3340510b5634f27108727f82c6ce9fb242"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/7cca20a27234207d6d114a39a3263ae9c88fd171",
-                "reference": "7cca20a27234207d6d114a39a3263ae9c88fd171",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/ff39cb3340510b5634f27108727f82c6ce9fb242",
+                "reference": "ff39cb3340510b5634f27108727f82c6ce9fb242",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +806,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-09-06 20:07:42"
+            "time": "2016-11-05 15:33:03"
         },
         {
             "name": "kartik-v/yii2-helpers",
@@ -1050,12 +1059,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "52b4db751e80440816f392b682d75f6f8f6585cb"
+                "reference": "6980832716b7075c103999c0574699b26e263f6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/52b4db751e80440816f392b682d75f6f8f6585cb",
-                "reference": "52b4db751e80440816f392b682d75f6f8f6585cb",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/6980832716b7075c103999c0574699b26e263f6c",
+                "reference": "6980832716b7075c103999c0574699b26e263f6c",
                 "shasum": ""
             },
             "require": {
@@ -1094,7 +1103,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-09-09 04:18:17"
+            "time": "2016-10-30 11:47:06"
         },
         {
             "name": "kartik-v/yii2-widget-datetimepicker",
@@ -1347,6 +1356,49 @@
             "time": "2016-01-10 16:47:35"
         },
         {
+            "name": "linslin/yii2-curl",
+            "version": "1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/linslin/Yii2-Curl.git",
+                "reference": "72ea79e6841696e489577c19b27859075b6aca72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/linslin/Yii2-Curl/zipball/72ea79e6841696e489577c19b27859075b6aca72",
+                "reference": "72ea79e6841696e489577c19b27859075b6aca72",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "linslin\\yii2\\curl\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Gajsek",
+                    "email": "info@linslin.org"
+                }
+            ],
+            "description": "Easy and nice cURL extension with RESTful support for Yii2",
+            "keywords": [
+                " curl",
+                "extension",
+                "restful",
+                "yii2"
+            ],
+            "time": "2016-10-31 12:31:06"
+        },
+        {
             "name": "serhatozles/yii2-arraysearch",
             "version": "dev-master",
             "source": {
@@ -1383,53 +1435,6 @@
                 "yii2"
             ],
             "time": "2016-06-01 23:18:34"
-        },
-        {
-            "name": "skeeks/yii2-curl",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/skeeks-semenov/yii2-curl.git",
-                "reference": "5eb85660874485c4bd67ccaa3ef415105d612a5a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/skeeks-semenov/yii2-curl/zipball/5eb85660874485c4bd67ccaa3ef415105d612a5a",
-                "reference": "5eb85660874485c4bd67ccaa3ef415105d612a5a",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "skeeks\\yii2\\curl\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Semenov Alexander",
-                    "email": "semenov@skeeks.com"
-                },
-                {
-                    "name": "SkeekS",
-                    "email": "support@skeeks.com",
-                    "homepage": "http://www.skeeks.com"
-                }
-            ],
-            "description": "Easy and nice cURL extension with RESTful support for Yii2",
-            "keywords": [
-                " curl",
-                "extension",
-                "restful",
-                "yii2"
-            ],
-            "time": "2015-06-24 23:18:43"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1486,26 +1491,26 @@
         },
         {
             "name": "trntv/yii2-aceeditor",
-            "version": "2.0.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/trntv/yii2-aceeditor.git",
-                "reference": "ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57"
+                "reference": "9adcbffa9aeadab5d77096b9681b9a89557eedfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trntv/yii2-aceeditor/zipball/ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57",
-                "reference": "ba8cdfe2624f1e0793b0000c8f8ccd6d24b1bb57",
+                "url": "https://api.github.com/repos/trntv/yii2-aceeditor/zipball/9adcbffa9aeadab5d77096b9681b9a89557eedfe",
+                "reference": "9adcbffa9aeadab5d77096b9681b9a89557eedfe",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/ace-builds": "~1.1.8",
-                "yiisoft/yii2": "~2.0"
+                "bower-asset/ace-builds": "^1.2.3",
+                "yiisoft/yii2": "^2.0.0"
             },
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
-                    "trntv\\aceeditor\\": ""
+                    "trntv\\aceeditor\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1524,20 +1529,20 @@
                 "code editor",
                 "yii"
             ],
-            "time": "2014-12-18 18:07:28"
+            "time": "2016-11-22 19:35:26"
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "2b75151ea60e1fd820046416eee2e89c3dda1133"
+                "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/2b75151ea60e1fd820046416eee2e89c3dda1133",
-                "reference": "2b75151ea60e1fd820046416eee2e89c3dda1133",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
+                "reference": "5bfcb7a6dfa9771e2248eb8c4448613330f343ff",
                 "shasum": ""
             },
             "require": {
@@ -1618,7 +1623,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-07-11 13:36:42"
+            "time": "2016-10-20 12:02:50"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
