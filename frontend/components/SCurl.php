@@ -1,18 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Раиль
- * Date: 23.11.2016
- * Time: 9:34
- */
-
 namespace frontend\components;
 
 
 use yii\base\Component;
 use linslin\yii2\curl;
 
-class SCurle extends Component
+class SCurl extends Component
 {
     const TOKEN = "81dc9bdb52d04dc20036dbd8313ed055";
     const URL = "http://tateco-cards.ru/index.php";
