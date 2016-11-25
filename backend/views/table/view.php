@@ -49,6 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Связанные таблицы',
                 'content' => $this->render('@backend/views/table-link/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Кнопки',
+                'content' => $this->render('@backend/views/buttons/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

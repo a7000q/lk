@@ -3,9 +3,12 @@
 
 namespace frontend\models\tables;
 
+use frontend\models\buttons\Buttons;
 use frontend\models\fields\Fields;
+use kartik\helpers\Html;
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\Url;
 
 class Tables extends \common\models\tables\AqTables
 {
@@ -22,6 +25,20 @@ class Tables extends \common\models\tables\AqTables
 
         if (count($result) == 0)
             return false;
+
+        if ($this->buttons)
+        {
+            foreach ($this->buttons as $button)
+            {
+                $result[] = [
+                    'label' => $button->name,
+                    'format' => 'raw',
+                    'value' =>  function($data) use ($button){
+                        return Html::a($button->name, Url::toRoute(['button/run', 'id_button' => $button->id, 'id' => $data->id]));
+                    }
+                ];
+            }
+        }
 
         if ($this->isView() or $this->isDelete())
             $result[] = [
@@ -93,6 +110,11 @@ class Tables extends \common\models\tables\AqTables
     public function getTableLinks()
     {
         return $this->hasMany(TableLink::className(), ['id_table' => 'id']);
+    }
+
+    public function getButtons()
+    {
+        return $this->hasMany(Buttons::className(), ["id_table" => "id"]);
     }
 
     public function isUpdate()

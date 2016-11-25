@@ -2,29 +2,24 @@
 
 namespace backend\controllers;
 
-use backend\models\bd\BD;
-use backend\models\category\Category;
-use backend\models\fields\Fields;
-use backend\models\filters\Filters;
-use backend\models\tables\TableLink;
-use Yii;
 use backend\models\tables\Tables;
-use yii\data\ActiveDataProvider;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\helpers\Json;
-use yii\helpers\Html;
-use kartik\grid\EditableColumnAction;
+use Yii;
 use yii\helpers\ArrayHelper;
+use kartik\grid\EditableColumnAction;
+use backend\models\buttons\Buttons;
+use yii\web\NotFoundHttpException;
+use yii\helpers\Json;
+use kartik\helpers\Html;
 
-class TableController extends CController
+
+class ButtonsController extends CController
 {
     public function actions()
     {
         return ArrayHelper::merge(parent::actions(), [
             'editrecord' => [
                 'class' => EditableColumnAction::className(),
-                'modelClass' => Tables::className(),
+                'modelClass' => Buttons::className(),
                 'outputValue' => function ($model, $attribute, $key, $index) {
                     return $model->$attribute;
                 },
@@ -41,17 +36,30 @@ class TableController extends CController
         ]);
     }
 
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Tables::find(),
-        ]);
 
-        return $this->renderAjax('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+
+        if (Yii::$app->request->isAjax)
+        {
+            $table = Tables::findOne($model->id_table);
+            $model->delete();
+
+            return $this->renderAjax('index', ['model' => $table]);
+        }
+
+        return $this->redirect(['index']);
     }
 
+    protected function findModel($id)
+    {
+        if (($model = Buttons::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
     public function actionView($id)
     {
@@ -65,7 +73,7 @@ class TableController extends CController
                 'messages' => [
                     'kv-detail-info' => 'Запись удалена. ' .
                         Html::a('<i class="glyphicon glyphicon-hand-right"></i>  Перейти',
-                            ['/table/index'], ['class' => 'btn btn-sm btn-info']) . ' в категорию.'
+                            ['/table/view', 'id' => $model->id_table], ['class' => 'btn btn-sm btn-info']) . ' в '.$model->table->rus_name.' .'
                 ]
             ]);
             $model->delete();
@@ -75,41 +83,8 @@ class TableController extends CController
         if ($model->load($post) && $model->save())
             Yii::$app->session->setFlash('kv-detail-success', 'Запись сохранена!');
 
-        $model->createObject($post);
-
         return $this->render('view', [
             'model' => $model,
         ]);
-    }
-
-    public function actionDelete($id)
-    {
-        $model = $this->findModel($id);
-
-        if (Yii::$app->request->isAjax)
-        {
-            $category = Category::findOne($model->id_category);
-            $model->delete();
-
-            return $this->renderAjax('index', ['model' => $category]);
-        }
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Tables model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Tables the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Tables::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
     }
 }

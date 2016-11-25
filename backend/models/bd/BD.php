@@ -4,7 +4,7 @@ namespace backend\models\bd;
 
 use yii\helpers\ArrayHelper;
 use yii;
-
+use backend\models\buttons\ButtonsType;
 
 class BD extends \yii\base\Model
 {
@@ -39,5 +39,13 @@ class BD extends \yii\base\Model
         }
 
         return $r;
+    }
+
+    static public function getButtonsTypes()
+    {
+        $buttons = ButtonsType::find()->all();
+        $result = ArrayHelper::map($buttons, "name", "name");
+
+        return $result;
     }
 }

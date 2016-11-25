@@ -2,6 +2,7 @@
 
 namespace backend\models\tables;
 
+use backend\models\buttons\Buttons;
 use yii\data\ActiveDataProvider;
 use backend\models\fields\Fields;
 use yii;
@@ -31,6 +32,13 @@ class Tables extends \common\models\tables\AqTables
     {
         return new ActiveDataProvider([
             'query' => TableLink::find()->where(['id_table' => $this->id])
+        ]);
+    }
+
+    public function getButtonsDataProvider()
+    {
+        return new ActiveDataProvider([
+            'query' => Buttons::find()->where(['id_table' => $this->id])
         ]);
     }
 
@@ -174,5 +182,21 @@ class Tables extends \common\models\tables\AqTables
 
         unlink($file_name);
         return true;
+    }
+
+    public function createObject($post)
+    {
+        if (isset($post['create-field']))
+            Fields::newField($this->id);
+
+        if (isset($post['create-filter']))
+            Filters::newFilter($this->id);
+
+        if (isset($post['create-table-link']))
+            TableLink::newTableLink($this->id);
+
+        if (isset($post['create-button']))
+            Buttons::newButton($this->id);
+
     }
 }
