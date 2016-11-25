@@ -437,5 +437,8 @@ class Fields extends \common\models\fields\AqFields
         return $this->hasOne(FieldScripts::className(), ['id_field' => 'id'])->where(['type' => 'view']);
     }
 
-
+    public function getTypeDate()
+    {
+        return $this->hasOne(FieldDate::className(), ['id_field' => 'id']);
+    }
 }
