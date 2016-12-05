@@ -119,20 +119,22 @@ class TableController extends CController
        return $this->render('create', ['model' => $model, 'table' => $table::$tableBD]);
    }
 
-   public function actionDelete($id, $id_table)
+   public function actionDelete($id, $id_table, $id_parent = false)
    {
        $model = $this->findTable($id_table);
 
        if (!$model::$tableBD->isDelete())
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
-       $record = $model::find($id)->one();
+       $record = $model::findOne($id);
 
        if (!$record)
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
        $record->delete();
-       $this->redirect(['index', 'id' => $id_table]);
+
+       if (!$id_parent)
+           $this->redirect(['index', 'id' => $id_table]);
    }
 
    public function actionView($id, $id_table)
@@ -142,7 +144,15 @@ class TableController extends CController
        if (!$table::$tableBD->isView())
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
 
+       $post = Yii::$app->request->post();
+
        $model = $table::findOne($id);
+
+       if (isset($post['create-record']))
+       {
+           $id_link = ArrayHelper::getValue($post, "link");
+           $model->addLinkRecord($id_link, $id);
+       }
 
        if (!$model)
            throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');

@@ -56,7 +56,7 @@ class Tables extends \common\models\tables\AqTables
         return $result;
     }
 
-    public function getEditGridViewColumns($link)
+    public function getEditGridViewColumns($link, $id_table = false)
     {
         $fields = $this->fields;
 
@@ -77,8 +77,12 @@ class Tables extends \common\models\tables\AqTables
                 'visibleButtons' => [
                     'delete' => $this->isDelete()
                 ],
-                'urlCreator' => function($action, $model, $key, $index){
-                    return [$action, 'id' => $model->id, 'id_table' => $this->id];
+                'urlCreator' => function($action, $model, $key, $index) use ($id_table){
+                    $result = [$action, 'id' => $model->id, 'id_table' => $this->id];
+
+                    if ($id_table)
+                        $result["id_parent"] = $id_table;
+                    return $result;
                 }
             ];
 

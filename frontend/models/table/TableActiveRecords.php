@@ -4,6 +4,7 @@ namespace frontend\models\table;
 
 use frontend\models\limitations\Limitations;
 use frontend\models\fields\Fields;
+use frontend\models\tables\TableLink;
 use Yii;
 use frontend\models\tables\Tables;
 use yii\helpers\ArrayHelper;
@@ -177,6 +178,20 @@ class TableActiveRecords extends \yii\db\ActiveRecord
     private function setGeneral($name, $id_field, $value)
     {
         $this->$name = $value;
+    }
+
+    public function addLinkRecord($id_link, $id)
+    {
+        $link = TableLink::findOne($id_link);
+
+        $class = $link->tableRef->getClassName();
+        $record = new $class;
+        $record::$tableBD = $link->tableRef;
+
+        $field_link = $link->fieldRef->name;
+
+        $record->{$field_link} = $id;
+        $record->save();
     }
 
     public function getLink($id_field)
