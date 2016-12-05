@@ -3,6 +3,8 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use kartik\form\ActiveForm;
 use yii\helpers\Html;
+use common\assets\EditablePageAsset;
+EditablePageAsset::register($this);
 ?>
 
 <?if ($link->tableRef->isCreate()):?>
