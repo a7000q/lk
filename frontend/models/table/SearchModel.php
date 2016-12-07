@@ -83,6 +83,16 @@ class SearchModel extends Model
         $model = $this->getTableActive();
         $this->load($get);
 
+        foreach ($model::$tableBD->fields as $field)
+            $sort[$field->attributeName] = [
+                'asc' => [
+                    $field->name => SORT_ASC
+                ],
+                'desc' => [
+                    $field->name => SORT_DESC
+                ]
+            ];
+
         $query = $model::find()->filterLimitations(Yii::$app->user->id, $model::$tableBD->id);
 
         if ($this->fields) {
@@ -110,9 +120,16 @@ class SearchModel extends Model
             $query = $query->andWhere($r_where);
         }
 
-        return new ActiveDataProvider([
+        $dataProvider =  new ActiveDataProvider([
             'query' => $query
         ]);
+
+        if (isset($sort))
+            $dataProvider->setSort([
+                'attributes' => $sort
+            ]);
+
+        return $dataProvider;
     }
 
     private function getWhere($field_name, $value)
