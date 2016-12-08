@@ -157,7 +157,7 @@ class TableActiveRecords extends \yii\db\ActiveRecord
     private function getDateText($name, $id_field)
     {
         $field = Fields::findOne($id_field);
-        $format = $field->typeDate->format;
+        $format = ArrayHelper::getValue($field, "typeDate.format", "d.m.Y");
 
         if ($this->$name == 0)
             return "";
