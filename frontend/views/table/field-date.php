@@ -1,8 +1,9 @@
 <?
 use kartik\datetime\DateTimePicker;
+use yii\helpers\ArrayHelper;
 ?>
 <?
-    $format = $field->typeDate->format;
+    $format = ArrayHelper::getValue($field, "typeDate.format", "d.m.Y");
     $format = str_replace("Y", "yyyy", $format);
 
     $field_name = $field->attributeDateName;
