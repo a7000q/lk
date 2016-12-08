@@ -197,7 +197,7 @@ class Fields extends \common\models\fields\AqFields
         $name = $this->attributeName;
         return [
             'attribute' => $this->attributeName,
-            'value' => date($this->typeDate->format, $model->$name),
+            'value' => date(ArrayHelper::getValue($this, "typeDate.format", "d.m.Y"), $model->$name),
             'displayOnly' => ($this->isUpdate())?false:true,
         ];
     }
