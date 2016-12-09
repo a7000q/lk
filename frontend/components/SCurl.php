@@ -28,4 +28,23 @@ class SCurl extends Component
 
         return json_decode($response);
     }
+
+    public function getContent($params)
+    {
+        $curl = new curl\Curl();
+        $url_string = $this::URL."?";
+        $operand = "";
+
+        foreach ($params as $key => $value)
+        {
+            $url_string .= $operand.$key."=".$value;
+            $operand = "&";
+        }
+
+        $url_string .= "&token=".$this::TOKEN;
+
+        $response = $curl->get($url_string);
+
+        return $response;
+    }
 }
