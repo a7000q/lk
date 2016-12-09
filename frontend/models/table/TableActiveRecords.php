@@ -167,7 +167,12 @@ class TableActiveRecords extends \yii\db\ActiveRecord
 
     private function getGeneral($name, $id_field)
     {
-        return $this->$name;
+        $result = $this->$name;
+
+        if (is_float($result))
+            $result = number_format($result, 2, ",", " ");
+
+        return $result;
     }
 
     private function setDateText($name, $id_field, $value)
