@@ -82,7 +82,7 @@ class Fields extends \common\models\fields\AqFields
             'value' => function($data) use ($name){
                 $result = $data->{$name};
 
-                if (is_numeric($result))
+                if (is_numeric($result) && !is_int($result))
                     $result = number_format($result, 2, ",", " ");
 
                 return $result;
@@ -99,7 +99,7 @@ class Fields extends \common\models\fields\AqFields
             'value' => function($data) use ($name){
                 $result = $data->{$name};
 
-                if (is_numeric($result))
+                if (is_numeric($result) && !is_int($result))
                     $result = number_format($result, 2, ",", " ");
 
                 return $result;
@@ -129,7 +129,7 @@ class Fields extends \common\models\fields\AqFields
             'value' => function($data) use ($name){
                 $result = $data->{$name};
 
-                if (is_numeric($result))
+                if (is_numeric($result) && !is_int($result))
                     $result = number_format($result, 2, ",", " ");
 
                 return $result;
@@ -264,7 +264,7 @@ class Fields extends \common\models\fields\AqFields
             'content' => function($data) use ($id_field){
                 $result = $data->getLink($id_field);
 
-                if (is_numeric($result))
+                if (is_numeric($result) && !is_int($result))
                     $result = number_format($result, 2, ",", " ");
 
                 return $result;
