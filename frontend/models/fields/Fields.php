@@ -79,6 +79,14 @@ class Fields extends \common\models\fields\AqFields
         $name = $this->attributeCalculateName;
         return [
             'attribute' => $name,
+            'value' => function($data) use ($name){
+                $result = $data->{$name};
+
+                if (is_numeric($result))
+                    $result = number_format($result, 2, ",", " ");
+
+                return $result;
+            },
             'pageSummary' => $this->page_summary?true:false
         ];
     }
@@ -88,6 +96,14 @@ class Fields extends \common\models\fields\AqFields
         $name = $this->attributeName;
         return [
             'attribute' => $name,
+            'value' => function($data) use ($name){
+                $result = $data->{$name};
+
+                if (is_numeric($result))
+                    $result = number_format($result, 2, ",", " ");
+
+                return $result;
+            },
             'pageSummary' => $this->page_summary?true:false
         ];
     }
@@ -110,6 +126,14 @@ class Fields extends \common\models\fields\AqFields
         $name = $this->attributeCalculateName;
         return [
             'attribute' => $name,
+            'value' => function($data) use ($name){
+                $result = $data->{$name};
+
+                if (is_numeric($result))
+                    $result = number_format($result, 2, ",", " ");
+
+                return $result;
+            },
             'readonly' => true
         ];
     }
@@ -238,7 +262,12 @@ class Fields extends \common\models\fields\AqFields
         return [
             'attribute' => $this->attributeName,
             'content' => function($data) use ($id_field){
-                return $data->getLink($id_field);
+                $result = $data->getLink($id_field);
+
+                if (is_numeric($result))
+                    $result = number_format($result, 2, ",", " ");
+
+                return $result;
             },
             'pageSummary' => $this->page_summary?true:false
         ];

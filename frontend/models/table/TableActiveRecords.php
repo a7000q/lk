@@ -169,9 +169,6 @@ class TableActiveRecords extends \yii\db\ActiveRecord
     {
         $result = $this->$name;
 
-        if (is_float($result))
-            $result = number_format($result, 2, ",", " ");
-
         return $result;
     }
 
