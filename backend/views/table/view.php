@@ -53,6 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Кнопки',
                 'content' => $this->render('@backend/views/buttons/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Сортировка',
+                'content' => $this->render('@backend/views/sort/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

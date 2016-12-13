@@ -5,6 +5,7 @@ namespace frontend\models\tables;
 
 use frontend\models\buttons\Buttons;
 use frontend\models\fields\Fields;
+use frontend\models\sort\Sort;
 use kartik\helpers\Html;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -162,6 +163,11 @@ class Tables extends \common\models\tables\AqTables
             return false;
 
         return true;
+    }
+
+    public function getTableSorts()
+    {
+        return $this->hasMany(Sort::className(), ['id_table' => 'id'])->orderBy("sort");
     }
 
 

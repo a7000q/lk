@@ -120,9 +120,21 @@ class SearchModel extends Model
             $query = $query->andWhere($r_where);
         }
 
+        $sorts = $model::$tableBD->tableSorts;
+
+        if ($sorts)
+        {
+            foreach ($sorts as $sort_table)
+            {
+                $fname = $sort_table->field->name." ".(($sort_table->action == 1)?"asc":"desc");
+                $query = $query->orderBy($fname);
+            }
+        }
+
         $dataProvider =  new ActiveDataProvider([
             'query' => $query
         ]);
+
 
         if (isset($sort))
             $dataProvider->setSort([

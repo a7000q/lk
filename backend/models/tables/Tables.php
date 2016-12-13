@@ -8,6 +8,7 @@ use backend\models\fields\Fields;
 use yii;
 use backend\models\generate\Generate;
 use backend\models\filters\Filters;
+use backend\models\sort\Sort;
 
 
 class Tables extends \common\models\tables\AqTables
@@ -39,6 +40,13 @@ class Tables extends \common\models\tables\AqTables
     {
         return new ActiveDataProvider([
             'query' => Buttons::find()->where(['id_table' => $this->id])
+        ]);
+    }
+
+    public function getSortDataProvider()
+    {
+        return new ActiveDataProvider([
+            'query' => Sort::find()->where(['id_table' => $this->id])
         ]);
     }
 
@@ -198,5 +206,24 @@ class Tables extends \common\models\tables\AqTables
         if (isset($post['create-button']))
             Buttons::newButton($this->id);
 
+        if (isset($post['create-sort']))
+            Sort::newSort($this->id);
+
+    }
+
+    public function getSortFieldsArray()
+    {
+        $fields = $this->fields;
+
+        $sortFields = $this->sortFields;
+        $sortFields = yii\helpers\ArrayHelper::map($sortFields, 'id_field', 'id_field');
+
+        $result = [];
+
+        foreach ($fields as $field)
+            if (!isset($sortFields[$field->id]))
+                $result[$field->id] = $field->rus_name;
+
+        return $result;
     }
 }

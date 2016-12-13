@@ -2,6 +2,7 @@
 
 namespace common\models\tables;
 
+use backend\models\sort\Sort;
 use Yii;
 use common\models\fields\AqFields;
 use common\models\category\AqCategory;
@@ -73,5 +74,10 @@ class AqTables extends \yii\db\ActiveRecord
         $class = "Table".$this->name.$this->id;
 
         return $ns."\\".$class;
+    }
+
+    public function getSortFields()
+    {
+        return $this->hasMany(Sort::className(), ['id_table' => 'id']);
     }
 }
