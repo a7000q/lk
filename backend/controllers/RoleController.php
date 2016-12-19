@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 
 use backend\models\fields\PermissionFields;
+use backend\models\maps\PermissionMapPoints;
+use backend\models\maps\PermissionMaps;
 use backend\models\roles\AddRoleForm;
 use backend\models\roles\UpdateRoleForm;
 use backend\models\tables\PermissionTables;
@@ -100,6 +102,16 @@ class RoleController extends CController
                 $field->load($post);
             }
 
+            if (isset($post['PermissionMaps'])) {
+                $map = $this->findPermissionMap($post['PermissionMaps']['id'], $id);
+                $map->load($post);
+            }
+
+            if (isset($post['PermissionMapPoints'])) {
+                $point = $this->findPermissionMapPoint($post['PermissionMapPoints']['id'], $id);
+                $point->load($post);
+            }
+
             return $this->renderAjax('view', ['model' => $model]);
         }
 
@@ -141,6 +153,22 @@ class RoleController extends CController
         $field->role_name = $role_name;
 
         return $field;
+    }
+
+    private function findPermissionMap($id, $role_name)
+    {
+        $map = PermissionMaps::findOne($id);
+        $map->role_name = $role_name;
+
+        return $map;
+    }
+
+    private function findPermissionMapPoint($id, $role_name)
+    {
+        $point = PermissionMapPoints::findOne($id);
+        $point->role_name = $role_name;
+
+        return $point;
     }
 
 }

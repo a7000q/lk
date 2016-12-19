@@ -33,6 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Таблицы',
                 'content' => $this->render('@backend/views/table/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Карты',
+                'content' => $this->render('@backend/views/maps/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

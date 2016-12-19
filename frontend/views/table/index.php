@@ -20,7 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => $model::$tableBD->gridViewFieldsArray,
         'panelBeforeTemplate' => '{before}{toolbar}',
-        'toolbar' => ['{toggleData}'],
-        'showPageSummary' => true
+        'toolbar' => ['{export}{toggleData}'],
+        'showPageSummary' => true,
+        'exportConfig' => [
+            GridView::CSV => [],
+            GridView::PDF => [],
+        ]
+
     ]); ?>
 </div>

@@ -20,7 +20,7 @@ class GlobalMandatoryAsset extends AssetBundle
     ];
 
     public $js = [
-        'global/plugins/bootstrap/js/bootstrap.min.js',
+        //'global/plugins/bootstrap/js/bootstrap.min.js',
         'global/plugins/js.cookie.min.js',
         'global/plugins/jquery-slimscroll/jquery.slimscroll.min.js',
         'global/plugins/jquery.blockui.min.js',

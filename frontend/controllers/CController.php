@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use frontend\models\maps\Maps;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -76,4 +77,21 @@ class CController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    protected function findMap($id)
+    {
+        $map = Maps::findOne($id);
+
+        if (!$map)
+            throw new NotFoundHttpException('Ошибка в получении ресурса.');
+
+        if ($map) {
+            if ($map->isGeneral())
+                return $map;
+            else
+                throw new ForbiddenHttpException('Доступ к данному разделу запрещен!');
+        }
+    }
+
+
 }
