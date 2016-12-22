@@ -168,6 +168,7 @@ class Fields extends \common\models\fields\AqFields
             'editableOptions'=> [
                 'formOptions' => ['action' => ['/table/editrecord', 'id_table_editrecord' => $this->table->id, 'id_field_editrecord' => $this->id]],
                 'inputType' => Editable::INPUT_SELECT2,
+                'inputOptions' => ['prompt' => 'Выберите значение'],
                 'options' => [
                     'data' => $dtArray
                 ]
