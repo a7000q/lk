@@ -117,3 +117,35 @@ use kartik\switchinput\SwitchInput;
         <?Pjax::end()?>
     </div>
 </div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">Действия с фильтрами</div>
+    <div class="panel-body">
+        <?Pjax::begin()?>
+        <table class="table table-bordered">
+            <tr>
+                <td><b>Поле</b></td>
+                <td><b>Доступность</b></td>
+            </tr>
+            <?foreach ($table->permissionFilters as $filter):?>
+                <?$filter->role_name = $table->role_name;?>
+                <tr>
+                    <td><?=$filter->field->rus_name?></td>
+                    <td>
+                        <?$form = ActiveForm::begin(['id' => 'general-filter-permissions-'.$filter->id, 'options' => ['data-pjax' => true]]);?>
+                        <?=$form->field($filter, 'id', ['template' => '{input}'])->hiddenInput()?>
+                        <?= $form->field($filter, 'general', ['template' => '{input}'])->widget(SwitchInput::classname(), [
+                            'type' => SwitchInput::CHECKBOX,
+                            'pluginEvents' => [
+                                "switchChange.bootstrapSwitch" => "function() { $('#general-filter-permissions-".$filter->id."').submit(); }"
+                            ],
+                            'options' => ['id' => 'general-input-filter-'.$filter->id]
+                        ]);?>
+                        <?ActiveForm::end(); ?>
+                    </td>
+                </tr>
+            <?endforeach;?>
+        </table>
+        <?Pjax::end()?>
+    </div>
+</div>

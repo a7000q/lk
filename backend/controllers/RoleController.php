@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 
 use backend\models\fields\PermissionFields;
+use backend\models\filters\PermissionFilters;
 use backend\models\maps\PermissionMapPoints;
 use backend\models\maps\PermissionMaps;
 use backend\models\roles\AddRoleForm;
@@ -102,6 +103,11 @@ class RoleController extends CController
                 $field->load($post);
             }
 
+            if (isset($post['PermissionFilters'])) {
+                $filter = $this->findPermissionFilter($post['PermissionFilters']['id'], $id);
+                $filter->load($post);
+            }
+
             if (isset($post['PermissionMaps'])) {
                 $map = $this->findPermissionMap($post['PermissionMaps']['id'], $id);
                 $map->load($post);
@@ -153,6 +159,14 @@ class RoleController extends CController
         $field->role_name = $role_name;
 
         return $field;
+    }
+
+    private function findPermissionFilter($id, $role_name)
+    {
+        $filter = PermissionFilters::findOne($id);
+        $filter->role_name = $role_name;
+
+        return $filter;
     }
 
     private function findPermissionMap($id, $role_name)

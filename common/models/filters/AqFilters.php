@@ -56,4 +56,9 @@ class AqFilters extends \yii\db\ActiveRecord
     {
         return $this->hasOne(AqFields::className(), ['id' => 'id_field']);
     }
+
+    public function getPermissionName($name)
+    {
+        return $name.'-filter-'.$this->id;
+    }
 }

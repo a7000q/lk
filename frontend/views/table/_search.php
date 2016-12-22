@@ -10,7 +10,9 @@ use kartik\helpers\Html;
             <?$form = ActiveForm::begin(['method' => 'get', 'action' => ['index', 'id' => $searchModel->id_table]])?>
                 <?if (count($searchModel->fieldFilters) != 0):?>
                     <?foreach ($searchModel->fieldFilters as $filter):?>
-                        <?=$this->render('search-field/field', ['form' => $form, 'model' => $searchModel, 'filter' => $filter])?>
+                        <?if ($filter->isGeneral()):?>
+                            cd<?=$this->render('search-field/field', ['form' => $form, 'model' => $searchModel, 'filter' => $filter])?>
+                        <?endif;?>
                     <?endforeach;?>
                 <?endif;?>
                 <?=$form->field($searchModel, 'generalInput')?>

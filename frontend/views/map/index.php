@@ -1,6 +1,7 @@
 <?
 
 use common\assets\YandexMapAsset;
+use kartik\form\ActiveForm;
 
 YandexMapAsset::register($this);
 
@@ -15,6 +16,8 @@ $this->registerJsFile('/js/map/script.js', ['depends' => 'common\assets\YandexMa
     <h2><?=$this->title;?></h2>
 
     <div id="myMap" style="weight: 100%; height: 600px;"></div>
+    <?$form = ActiveForm::begin()?>
+    <?ActiveForm::end();?>
 
     <div id="points" style="display: none;">
         <?foreach ($map->mapPoints as $point):?>

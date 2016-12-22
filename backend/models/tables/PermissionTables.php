@@ -2,6 +2,7 @@
 
 namespace backend\models\tables;
 
+use backend\models\filters\PermissionFilters;
 use yii;
 use serhatozles\arraysearch\ArraySearch;
 use yii\helpers\ArrayHelper;
@@ -138,5 +139,10 @@ class PermissionTables extends Tables
     public function getPermissionFields()
     {
         return $this->hasMany(PermissionFields::className(), ['id_table' => 'id']);
+    }
+
+    public function getPermissionFilters()
+    {
+        return $this->hasMany(PermissionFilters::className(), ['id_table' => 'id']);
     }
 }
