@@ -22,7 +22,7 @@ class FieldLink extends AqFieldLink
         $class::$tableBD = $table;
         $model = $class::find()->filterLimitations(Yii::$app->user->id, $table->id)->all();
 
-        return ArrayHelper::merge(['Выберите значение', ArrayHelper::map($model, $field_ref, $field_visible)]);
+        return ArrayHelper::merge(['Выберите значение'], ArrayHelper::map($model, $field_ref, $field_visible));
     }
 
     public function getField()
