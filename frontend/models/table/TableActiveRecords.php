@@ -216,7 +216,7 @@ class TableActiveRecords extends \yii\db\ActiveRecord
             $result = $this->hasOne($class, [$field_ref_name => $field_name])->one();
 
             if ($link->fieldVisible->type->name == "link")
-                if ($result->getLink($link->fieldVisible->id))
+                if ($link->fieldVisible->id)
                     return $result->getLink($link->fieldVisible->id);
 
             return ArrayHelper::getValue($result, $field_visible_name);
