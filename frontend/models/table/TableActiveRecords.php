@@ -73,7 +73,10 @@ class TableActiveRecords extends \yii\db\ActiveRecord
 
     public function __get($name)
     {
-        $field = Fields::find()->where(['=', 'rus_name', $name])->andWhere(['<>', 'rus_name', 'id'])->andWhere(['id_table' => $this::$tableBD->id])->one();
+        $field = false;
+
+        if ($this::$tableBD)
+            $field = Fields::find()->where(['=', 'rus_name', $name])->andWhere(['<>', 'rus_name', 'id'])->andWhere(['id_table' => $this::$tableBD->id])->one();
 
         if ($field)
             return $this->getFieldScript($field->attributeNameMain);
