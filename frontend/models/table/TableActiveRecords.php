@@ -310,6 +310,38 @@ class LimitationsQuery extends ActiveQuery
        return $this;
    }
 
+   public function filterLimitationField($id_user, $id_field)
+   {
+       $limitations = Limitations::find()->where(['id_user' => $id_user])->andWhere(['id_field' => $id_field])->all();
+
+       foreach ($limitations as $limitation)
+       {
+           $field = $limitation->field->typeLink->fieldRef;
+           $field_name = $this->getLName($field);
+           $operand = $limitation->operand;
+           $value = $limitation->value;
+           $r_where[$field_name][] = ['operand' => $operand, 'value' => $value];
+       }
+
+       if (isset($r_where))
+       {
+           foreach ($r_where as $field_name => $where)
+           {
+               $f_where = array();
+               foreach ($where as $wh)
+               {
+                   $f_where[] = [$wh["operand"], $field_name, $wh["value"]];
+               }
+
+               $f_where = ArrayHelper::merge(['or'], $f_where);
+
+               $this->andWhere($f_where);
+           }
+       }
+
+       return $this;
+   }
+
     public function addWhereGeneral($field, $value)
     {
         $result = false;
