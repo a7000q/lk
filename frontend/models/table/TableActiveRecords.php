@@ -35,12 +35,13 @@ class TableActiveRecords extends \yii\db\ActiveRecord
     public function rules()
     {
         $result = array();
-        foreach (static::$tableBD->fields as $field)
-        {
-            $rules = $field->getRuleModel();
-            foreach ($rules as $rule)
-                $result[] = $rule;
-        }
+        if (static::$tableBD)
+            foreach (static::$tableBD->fields as $field)
+            {
+                $rules = $field->getRuleModel();
+                foreach ($rules as $rule)
+                    $result[] = $rule;
+            }
 
         return $result;
     }
