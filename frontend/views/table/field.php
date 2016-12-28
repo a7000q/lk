@@ -14,6 +14,9 @@
             case "link":
                 echo $this->render('field-link', ['model' => $model, 'field' => $field, 'form' => $form]);
                 break;
+            case "password":
+                echo $this->render('field-password', ['model' => $model, 'field' => $field, 'form' => $form]);
+                break;
             default:
                 echo "";
                 break;
