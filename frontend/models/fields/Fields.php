@@ -43,6 +43,9 @@ class Fields extends \common\models\fields\AqFields
                 case "calculate":
                     $result = $this->getCalculateColumn();
                     break;
+                case "password":
+                    $result = $this->getPasswordColumn();
+                    break;
                 default:
                     $result = $this->getMainColumn();
                     break;
@@ -64,6 +67,9 @@ class Fields extends \common\models\fields\AqFields
                     break;
                 case "calculate":
                     $result = $this->getEditCalculateColumn();
+                    break;
+                case "password":
+                    $result = $this->getEditPasswordColumn();
                     break;
                 default:
                     $result = $this->getEditMainColumn();
@@ -88,6 +94,17 @@ class Fields extends \common\models\fields\AqFields
                 return $result;
             },
             'pageSummary' => $this->page_summary?true:false
+        ];
+    }
+
+    public function getPasswordColumn()
+    {
+        $name = $this->attributePasswordName;
+        return [
+            'attribute' => $name,
+            'value' => function($data) use ($name){
+                return "";
+            }
         ];
     }
 
@@ -133,6 +150,18 @@ class Fields extends \common\models\fields\AqFields
                     $result = number_format($result, 2, ",", "");
 
                 return $result;
+            },
+            'readonly' => true
+        ];
+    }
+
+    public function getEditPasswordColumn()
+    {
+        $name = $this->attributePasswordName;
+        return [
+            'attribute' => $name,
+            'value' => function($data) use ($name){
+                return "";
             },
             'readonly' => true
         ];
@@ -191,6 +220,9 @@ class Fields extends \common\models\fields\AqFields
                 case "calculate":
                     $result = $this->getCalculateAttribute($model);
                     break;
+                case "password":
+                    $result = $this->getPasswordAttribute($model);
+                    break;
                 default:
                     $result = $this->getGeneralAttribute($model);
                     break;
@@ -222,6 +254,16 @@ class Fields extends \common\models\fields\AqFields
         return [
             'attribute' => $this->attributeName,
             'value' => date(ArrayHelper::getValue($this, "typeDate.format", "d.m.Y"), $model->$name),
+            'displayOnly' => ($this->isUpdate())?false:true,
+        ];
+    }
+
+    private function getPasswordAttribute($model)
+    {
+        $name = $this->attributePasswordName;
+        return [
+            'attribute' => $name,
+            'value' => "",
             'displayOnly' => ($this->isUpdate())?false:true,
         ];
     }
@@ -292,6 +334,9 @@ class Fields extends \common\models\fields\AqFields
             case "calculate":
                 $result = $this->getRuleCalculate();
                 break;
+            case "password":
+                $result = $this->getRulePassword();
+                break;
         }
 
         return $result;
@@ -300,6 +345,13 @@ class Fields extends \common\models\fields\AqFields
     public function getRuleInteger()
     {
         $result[] = [$this->attributeName, 'integer'];
+
+        return $result;
+    }
+
+    public function getRulePassword()
+    {
+        $result[] = [$this->attributePasswordName, 'string'];
 
         return $result;
     }
@@ -352,6 +404,9 @@ class Fields extends \common\models\fields\AqFields
             case "calculate":
                 $result = $this->getAttributeCalculate();
                 break;
+            case "password":
+                $result = $this->getAttributePassword();
+                break;
         }
 
         return $result;
@@ -367,6 +422,13 @@ class Fields extends \common\models\fields\AqFields
     public function getAttributeText()
     {
         $result[] = [$this->attributeName => $this->rus_name];
+
+        return $result;
+    }
+
+    public function getAttributePassword()
+    {
+        $result[] = [$this->attributePasswordName => $this->rus_name];
 
         return $result;
     }
@@ -412,6 +474,9 @@ class Fields extends \common\models\fields\AqFields
             case "calculate":
                 $result = $this->getAttributeCalculateName();
                 break;
+            case "password":
+                $result = $this->getAttributePasswordName();
+                break;
         }
 
         return $result;
@@ -431,6 +496,12 @@ class Fields extends \common\models\fields\AqFields
     {
         return $this->name."__".$this->id."__calculate";
     }
+
+    public function getAttributePasswordName()
+    {
+        return $this->name."__".$this->id."__password";
+    }
+
 
     public function getAttributeLinkName()
     {

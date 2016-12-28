@@ -100,6 +100,9 @@ class TableActiveRecords extends \yii\db\ActiveRecord
                 case "calculate":
                     return $this->getCalculateField($param[1]);
                     break;
+                case "password":
+                    return "";
+                    break;
                 default:
                     break;
             }
@@ -144,6 +147,9 @@ class TableActiveRecords extends \yii\db\ActiveRecord
                 case "link":
                     $this->getLinkFieldTable($param[1]);
                     break;
+                case "password":
+                    $this->setPassword($param[0], $param[1], $value);
+                    break;
                 default:
                     break;
             }
@@ -181,6 +187,11 @@ class TableActiveRecords extends \yii\db\ActiveRecord
     private function setDateText($name, $id_field, $value)
     {
         $this->$name = strtotime($value);
+    }
+
+    private function setPassword($name, $id_field, $value)
+    {
+        $this->$name = md5($value);
     }
 
     private function setGeneral($name, $id_field, $value)
