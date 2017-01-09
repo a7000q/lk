@@ -11,7 +11,7 @@ use kartik\helpers\Html;
                 <?if (count($searchModel->fieldFilters) != 0):?>
                     <?foreach ($searchModel->fieldFilters as $filter):?>
                         <?if ($filter->isGeneral()):?>
-                            cd<?=$this->render('search-field/field', ['form' => $form, 'model' => $searchModel, 'filter' => $filter])?>
+                            <?=$this->render('search-field/field', ['form' => $form, 'model' => $searchModel, 'filter' => $filter])?>
                         <?endif;?>
                     <?endforeach;?>
                 <?endif;?>
