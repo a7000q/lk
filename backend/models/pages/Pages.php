@@ -36,8 +36,7 @@ class Pages extends AqPages
         $generate->viewPath = '@frontend/views/page/'.$this->name;
         $files = $generate->generate();
 
-        print_r($files);
-        exit;
+
 
         try {
             foreach ($files as $file)
