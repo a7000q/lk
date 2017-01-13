@@ -31,7 +31,9 @@ class Pages extends AqPages
 
         if(!is_dir($dir)) mkdir($dir);
 
-        chmod($dir, 777);
+        $oldumask = umask(0);
+        chmod($dir, 0777);
+        umask($oldumask);
 
         $generate = new Generator();
         $generate->controllerClass = 'frontend\controllers\page\\'.ucfirst($this->name)."Controller";
