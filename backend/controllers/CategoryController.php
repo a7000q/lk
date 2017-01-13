@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\maps\Maps;
+use backend\models\pages\Pages;
 use backend\models\tables\Tables;
 use Yii;
 use backend\models\category\Category;
@@ -52,6 +53,9 @@ class CategoryController extends CController
 
         if (isset($post['create-map']))
             Maps::newMap($id);
+
+        if (isset($post['create-page']))
+            Pages::newPage($id);
 
         return $this->render('view', [
             'model' => $model,

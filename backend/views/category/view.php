@@ -37,6 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Карты',
                 'content' => $this->render('@backend/views/maps/index.php', ['model' => $model])
+            ],
+            [
+                'label' => 'Страницы',
+                'content' => $this->render('@backend/views/pages/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,

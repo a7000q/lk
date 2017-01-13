@@ -10,6 +10,7 @@ use backend\models\tables\TableLink;
 use Yii;
 use backend\models\tables\Tables;
 use yii\data\ActiveDataProvider;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
