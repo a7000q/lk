@@ -27,10 +27,17 @@ class Pages extends AqPages
         if (file_exists($file_name))
             return false;
 
+        $dir = Yii::getAlias('@frontend/views/page/'.$this->name);
+
+        if(!is_dir($dir)) mkdir($dir) ;
+
         $generate = new Generator();
         $generate->controllerClass = 'frontend\controllers\page\\'.ucfirst($this->name)."Controller";
         $generate->viewPath = '@frontend/views/page/'.$this->name;
         $files = $generate->generate();
+
+        print_r($files);
+        exit;
 
         try {
             foreach ($files as $file)
