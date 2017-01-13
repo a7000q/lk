@@ -29,7 +29,7 @@ class Pages extends AqPages
 
         $dir = Yii::getAlias('@frontend/views/page/'.$this->name);
 
-        if(!is_dir($dir)) mkdir($dir);
+        if(!is_dir($dir)) mkdir($dir, 0777);
 
         $oldumask = umask(0);
         chmod($dir, 0777);
