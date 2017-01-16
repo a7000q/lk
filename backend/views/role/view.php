@@ -43,6 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'label' => 'Карты',
                         'content' => $this->render('permission-maps', ['model' => $model])
+                    ],
+                    [
+                        'label' => 'Страницы',
+                        'content' => $this->render('permission-page', ['model' => $model])
                     ]
                 ],
                 'position'=>TabsX::POS_ABOVE,

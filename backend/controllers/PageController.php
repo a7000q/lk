@@ -5,7 +5,9 @@ namespace backend\controllers;
 use yii\helpers\ArrayHelper;
 use kartik\grid\EditableColumnAction;
 use backend\models\pages\Pages;
-
+use yii\web\NotFoundHttpException;
+use Yii;
+use backend\models\category\Category;
 
 class PageController extends CController
 {
@@ -31,5 +33,28 @@ class PageController extends CController
         ]);
     }
 
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+
+        if (Yii::$app->request->isAjax)
+        {
+            $category = Category::findOne($model->id_category);
+            $model->delete();
+
+            return $this->renderAjax('index', ['model' => $category]);
+        }
+
+        return $this->redirect(['index']);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Pages::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
 }

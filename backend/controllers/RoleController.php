@@ -7,6 +7,7 @@ use backend\models\fields\PermissionFields;
 use backend\models\filters\PermissionFilters;
 use backend\models\maps\PermissionMapPoints;
 use backend\models\maps\PermissionMaps;
+use backend\models\pages\PermissionPages;
 use backend\models\roles\AddRoleForm;
 use backend\models\roles\UpdateRoleForm;
 use backend\models\tables\PermissionTables;
@@ -118,6 +119,11 @@ class RoleController extends CController
                 $point->load($post);
             }
 
+            if (isset($post['PermissionPages'])) {
+                $page = $this->findPermissionPages($post['PermissionPages']['id'], $id);
+                $page->load($post);
+            }
+
             return $this->renderAjax('view', ['model' => $model]);
         }
 
@@ -183,6 +189,14 @@ class RoleController extends CController
         $point->role_name = $role_name;
 
         return $point;
+    }
+
+    private function findPermissionPages($id, $role_name)
+    {
+        $page = PermissionPages::findOne($id);
+        $page->role_name = $role_name;
+
+        return $page;
     }
 
 }

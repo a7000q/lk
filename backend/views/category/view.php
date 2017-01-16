@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Страницы',
-                'content' => $this->render('@backend/views/pages/index.php', ['model' => $model])
+                'content' => $this->render('@backend/views/page/index.php', ['model' => $model])
             ]
         ],
         'position'=>TabsX::POS_LEFT,
