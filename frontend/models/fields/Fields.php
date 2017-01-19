@@ -93,7 +93,19 @@ class Fields extends \common\models\fields\AqFields
 
                 return $result;
             },
-            'pageSummary' => $this->page_summary?true:false
+            'pageSummary' => function($summary, $data, $widget) use ($name){
+                if (!$this->page_summary)
+                    return false;
+
+                $sum = 0;
+                foreach ($data as $value)
+                {
+                    $x = str_replace(",", ".", $value) * 1;
+                    $sum += $x;
+                }
+
+                return str_replace(".", ",", $sum);
+            }
         ];
     }
 
@@ -121,7 +133,19 @@ class Fields extends \common\models\fields\AqFields
 
                 return $result;
             },
-            'pageSummary' => $this->page_summary?true:false
+            'pageSummary' => function($summary, $data, $widget) use ($name){
+                if (!$this->page_summary)
+                    return false;
+
+                $sum = 0;
+                foreach ($data as $value)
+                {
+                    $x = str_replace(",", ".", $value) * 1;
+                    $sum += $x;
+                }
+
+                return str_replace(".", ",", $sum);
+            }
         ];
     }
 
@@ -301,6 +325,7 @@ class Fields extends \common\models\fields\AqFields
     private function getLinkColumn()
     {
         $id_field = $this->id;
+        $name = $this->attributeName;
         return [
             'attribute' => $this->attributeName,
             'content' => function($data) use ($id_field){
@@ -311,7 +336,19 @@ class Fields extends \common\models\fields\AqFields
 
                 return $result;
             },
-            'pageSummary' => $this->page_summary?true:false
+            'pageSummary' => function($summary, $data, $widget) use ($name){
+                if (!$this->page_summary)
+                    return false;
+
+                $sum = 0;
+                foreach ($data as $value)
+                {
+                    $x = str_replace(",", ".", $value) * 1;
+                    $sum += $x;
+                }
+
+                return str_replace(".", ",", $sum);
+            }
         ];
     }
 
