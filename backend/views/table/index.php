@@ -8,7 +8,7 @@ use common\assets\EditablePageAsset;
 if ($model->tablesDataProvider->count == 0)
     EditablePageAsset::register($this);
 
-?>
+    ?>
 
 <?php
 $this->registerJs(

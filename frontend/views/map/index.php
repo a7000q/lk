@@ -21,11 +21,13 @@ $this->registerJsFile('/js/map/script.js', ['depends' => 'common\assets\YandexMa
 
     <div id="points" style="display: none;">
         <?foreach ($map->mapPoints as $point):?>
-            <div class="point">
-                <input type="hidden" class="name" value="<?=$point->name?>">
-                <input type="hidden" class="description" value="<?=$point->description?>">
-                <input type="hidden" class="coords" value="<?=$point->value?>">
-            </div>
+            <?if ($point->isGeneral()):?>
+                <div class="point">
+                    <input type="hidden" class="name" value="<?=$point->name?>">
+                    <input type="hidden" class="description" value="<?=$point->description?>">
+                    <input type="hidden" class="coords" value="<?=$point->value?>">
+                </div>
+            <?endif;?>
         <?endforeach;?>
     </div>
 </div>
