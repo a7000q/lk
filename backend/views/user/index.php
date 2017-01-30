@@ -17,8 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'heading'=>'<h3 class="panel-title"><i class="icon-user"></i> '.$this->title.'</h3>',
             'type'=>'info',
             'before'=>Html::a('<i class="glyphicon glyphicon-plus"></i> Добавить', ['create'], ['class' => 'btn btn-success']),
-            'after'=>false,
-            'footer'=>false
+            'after'=>false
         ],
         'columns' => [
             'username',
