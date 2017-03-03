@@ -26,7 +26,11 @@ MainAsset::register($this);
         <!-- BEGIN LOGO -->
         <div class="page-logo">
             <a href="/">
-                <?=Html::img('@commonWeb/assets/layouts/layout/img/miniLogo.', ['alt' => 'logo', 'class' => 'logo-default'])?>
+                <?=Html::img('@commonWeb/assets/layouts/layout/img/miniLogo.png', [
+                    'alt' => 'logo',
+                    'class' => 'logo-default',
+                    'style' => "margin-left:20px;"
+                ])?>
             </a>
             <div class="menu-toggler sidebar-toggler"> </div>
         </div>
