@@ -15,7 +15,7 @@ class m170224_134404_add_admin extends Migration
             'email' => "a7000q@gmail.com",
             'status' => 10,
             'created_at' => time(),
-            'update_at' => time()
+            'updated_at' => time()
         ]);
     }
 
