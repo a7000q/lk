@@ -13,7 +13,8 @@ class m170224_134404_add_admin extends Migration
             'auth_key' => 'mHkfy6uhml2ahHKt4lkGRZBTzx-wA3mr',
             'password_hash' => md5("123456"),
             'email' => "a7000q@gmail.com",
-            'status' => 10
+            'status' => 10,
+            'created_at' => time()
         ]);
     }
 
