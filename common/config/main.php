@@ -2,6 +2,7 @@
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'language' => 'ru-RU',
+    'timeZone' => 'Europe/Moscow',
     'modules' => [
         'gridview' =>  [
             'class' => '\kartik\grid\Module',
