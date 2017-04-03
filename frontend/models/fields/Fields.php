@@ -128,7 +128,7 @@ class Fields extends \common\models\fields\AqFields
             'value' => function($data) use ($name){
                 $result = $data->{$name};
 
-                if (is_numeric($result) && !is_int($result))
+                if (is_numeric($result) && !is_int($result) && (strpos($result, ",") || strpos($result, ".")))
                     $result = number_format($result, 2, ",", "");
 
                 return $result;
